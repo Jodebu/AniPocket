@@ -26,4 +26,5 @@ const String UI_LOADING = 'Loading...';
 const String UI_ENGLISH = 'English:';
 const String UI_NO_TITLE = 'No title found';
 const String UI_STANDARD_TITLE = 'Standard title:';
+const String UI_SYNOPSIS = 'Synopsis';
 const String UI_JAPANESE = 'Japanese:';

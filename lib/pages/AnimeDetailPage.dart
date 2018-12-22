@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/views/index.dart';
+import 'package:anipocket/views/icon_text_pair.dart';
 
 class AnimeDetailPage extends StatefulWidget {
   AnimeDetailPage({Key key, this.malId, this.title}) : super(key: key);
@@ -45,25 +46,25 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
               bottom: TabBar(
                 tabs: [
                   Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Icon(Icons.info), Text('Info')],
+                    child: IconTextPair(
+                      icon: Icon(Icons.info),
+                      text: Text('Info'),
+                      mainAxisalignment: MainAxisAlignment.center,
                     ),
                   ),
                   Tab(
-                    child: Row(
-                      mainAxisAlignment: MainAxisAlignment.center,
-                      children: [Icon(Icons.tv), Text('Episodes')],
+                    child: IconTextPair(
+                      icon: Icon(Icons.tv),
+                      text: Text('Episodes'),
+                      mainAxisalignment: MainAxisAlignment.center,
                     ),
-                  )
+                  ),
                 ],
               ),
             ),
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
-              Center(
-                child: Text('EPISODES'),
-              )
+              Center(child: Text('EPISODES'))
             ])));
   }
 }

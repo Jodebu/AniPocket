@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/dialogs/titleDialog.dart';
+import 'package:anipocket/views/icon_text_pair.dart';
 
 class AnimeInfoView extends StatelessWidget {
   AnimeInfoView({Key key, this.animeInfo}) : super(key: key);
@@ -124,7 +125,12 @@ class AnimeInfoView extends StatelessWidget {
             ],
           ),
           Divider(),
-          CategoriesView(genres: animeInfo == null ? List() : animeInfo[GENRES])
+          CategoriesView(
+              genres: animeInfo == null ? List() : animeInfo[GENRES]),
+          Divider(),
+          SynopsisView(
+            synopsis: animeInfo == null ? UI_LOADING : animeInfo[SYNOPSIS],
+          )
         ]));
   }
 }
@@ -139,7 +145,7 @@ class CategoriesView extends StatelessWidget {
     return Column(
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
-        Text(GENRES),
+        Text(UI_GENRES, style: TextStyle(fontWeight: FontWeight.bold)),
         Wrap(
           alignment: WrapAlignment.center,
           spacing: 8.0,
@@ -152,24 +158,20 @@ class CategoriesView extends StatelessWidget {
   }
 }
 
-class IconTextPair extends StatelessWidget {
-  IconTextPair({
-    Key key,
-    this.icon,
-    this.text,
-  });
+class SynopsisView extends StatelessWidget {
+  SynopsisView({Key key, this.synopsis}) : super(key: key);
 
-  final Icon icon;
-  final Text text;
+  final String synopsis;
 
   @override
   Widget build(BuildContext context) {
-    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
-      icon,
-      Padding(
-        padding: EdgeInsets.only(left: 4.0),
-      ),
-      text
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(UI_SYNOPSIS, style: TextStyle(fontWeight: FontWeight.bold)),
+        Padding(padding: EdgeInsets.only(top: 8.0)),
+        Text(synopsis)
+      ],
+    );
   }
 }
