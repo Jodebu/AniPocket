@@ -33,28 +33,100 @@ class AnimeInfoView extends StatelessWidget {
               ),
               Flexible(
                 flex: 3,
-                fit: FlexFit.loose,
+                fit: FlexFit.tight,
                 child: Column(
+                  crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
                     Text(
                       animeInfo == null ? 'title' : animeInfo[TITLE],
                       style:
                           TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
+                      maxLines: 2,
+                      softWrap: true,
+                      overflow: TextOverflow.ellipsis,
+                    ),
+                    Divider(),
+                    IconTextPair(
+                      icon: Icon(Icons.local_movies,
+                          color: Theme.of(context).primaryColor),
+                      text: Text(animeInfo == null
+                          ? LOADING
+                          : animeInfo[TYPE].toString()),
+                    ),
+                    IconTextPair(
+                      icon:
+                          Icon(Icons.tv, color: Theme.of(context).primaryColor),
+                      text: Text(animeInfo == null
+                          ? LOADING
+                          : animeInfo[EPISODES].toString()),
+                    ),
+                    IconTextPair(
+                      icon: Icon(Icons.live_tv,
+                          color: Theme.of(context).primaryColor),
+                      text: Text(animeInfo == null
+                          ? LOADING
+                          : animeInfo[STATUS]),
+                    ),
+                    IconTextPair(
+                      icon: Icon(Icons.live_tv,
+                          color: Theme.of(context).primaryColor),
+                      text: Text(
+                          animeInfo == null ? LOADING : animeInfo[DURATION]),
+                    ),
+                    Text(
+                      animeInfo == null
+                          ? 'No english title provided'
+                          : animeInfo[TITLE_ENGLISH],
                       softWrap: true,
                     ),
                     Text(
-                      animeInfo == null ? 'title' : animeInfo[TITLE_ENGLISH],
-                      softWrap: true,
-                    ),
-                    Text(
-                      animeInfo == null ? 'title' : animeInfo[TITLE_JAPANESE],
+                      animeInfo == null
+                          ? 'No japanese title provided'
+                          : animeInfo[TITLE_JAPANESE],
                       softWrap: true,
                     )
                   ],
                 ),
               ),
             ],
-          )
+          ),
+          Divider(),
+          AnimeStatsView(animeInfo: animeInfo)
         ]));
+  }
+}
+
+class AnimeStatsView extends StatelessWidget {
+  AnimeStatsView({Key key, this.animeInfo}) : super(key: key);
+
+  final Map animeInfo;
+
+  @override
+  Widget build(BuildContext context) {
+    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
+      Text('General Information'),
+      Row(
+        mainAxisSize: MainAxisSize.max,
+        mainAxisAlignment: MainAxisAlignment.spaceAround,
+        children: [],
+      )
+    ]);
+  }
+}
+
+class IconTextPair extends StatelessWidget {
+  IconTextPair({
+    Key key,
+    this.icon,
+    this.text,
+  });
+
+  final Icon icon;
+  final Text text;
+
+  @override
+  Widget build(BuildContext context) {
+    return Row(
+        mainAxisAlignment: MainAxisAlignment.start, children: [icon, Padding(padding: EdgeInsets.only(left: 4.0),), text]);
   }
 }
