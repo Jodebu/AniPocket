@@ -1,32 +1,34 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class MediaTab extends StatelessWidget {
-  MediaTab({Key key, this.trailerUrl, this.pictures}) : super(key: key);
+  MediaTab({Key key, this.media}) : super(key: key);
 
   static const int PORTRAIT_COLUMNS = 3;
   static const int LANDSCAPE_COLUMNS = 4;
-  final String trailerUrl;
-  final List pictures;
+  final List media;
 
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
-      return pictures == null
+      return media == null
           ? Center(child: CircularProgressIndicator())
           : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
                 crossAxisCount: orientation == Orientation.portrait
                     ? PORTRAIT_COLUMNS
                     : LANDSCAPE_COLUMNS,
-                childAspectRatio: 1,
                 mainAxisSpacing: 2,
                 crossAxisSpacing: 2,
               ),
-              itemCount: pictures == null ? 0 : pictures.length,
-              itemBuilder: (context, i) =>
-                  PictureItem(imageUrl: pictures[i][SMALL]));
+              itemCount: media == null ? 0 : media.length,
+              itemBuilder: (context, i) => media[i].containsKey(VIDEO_URL)
+                  ? VideoItem(
+                      imageUrl: media[i][IMAGE_URL],
+                      videoUrl: media[i][VIDEO_URL])
+                  : PictureItem(imageUrl: media[i][SMALL]));
     });
   }
 }
@@ -46,6 +48,49 @@ class PictureItem extends StatelessWidget {
         fit: BoxFit.cover,
       ),
       //TODO: image_view -> Fullscreen, Hero animations -> transitions
+    );
+  }
+}
+
+class VideoItem extends StatelessWidget {
+  final imageUrl;
+  final videoUrl;
+
+  VideoItem({Key key, @required this.imageUrl, @required this.videoUrl})
+      : super(key: key);
+
+  _launchVideo() async {
+    if (await canLaunch(videoUrl)) {
+      await launch(videoUrl);
+    } else {
+      throw 'Could not launch $videoUrl';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: Center(child: CircularProgressIndicator()),
+            errorWidget: Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
+          PositionedDirectional(
+            bottom: 4.0,
+            end: 4.0,
+            child: Icon(
+              Icons.play_circle_filled,
+              size: 50,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          )
+        ],
+      ),
+      onTap: () => _launchVideo(),
     );
   }
 }

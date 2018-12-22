@@ -12,6 +12,7 @@ const String MAL_ID = 'mal_id';
 const String MANGA = 'manga';
 const String NAME = 'name';
 const String PICTURES = 'pictures';
+const String PROMO = 'promo';
 const String RATING = 'rating';
 const String SMALL = 'small';
 const String STATUS = 'status';
@@ -22,12 +23,16 @@ const String TITLE_JAPANESE = 'title_japanese';
 const String TRAILER_URL = 'trailer_url';
 const String TYPE = 'type';
 const String TOP = 'top';
+const String VIDEO_URL = 'video_url';
+const String VIDEOS = 'videos';
 
 //UI related
 const String UI_GENRES = 'Genres';
 const String UI_LOADING = 'Loading...';
 const String UI_ENGLISH = 'English:';
+const String UI_JAPANESE = 'Japanese:';
 const String UI_NO_TITLE = 'No title found';
+const String UI_PICTURES = 'Pictures';
 const String UI_STANDARD_TITLE = 'Standard title:';
 const String UI_SYNOPSIS = 'Synopsis';
-const String UI_JAPANESE = 'Japanese:';
+const String UI_VIDEOS = 'Videos';

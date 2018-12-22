@@ -16,7 +16,7 @@ class AnimeDetailPage extends StatefulWidget {
 class _AnimeDetailPageState extends State<AnimeDetailPage> {
   String _malId;
   Map _anime;
-  List _pictures;
+  List _media;
 
   _AnimeDetailPageState(String malId) {
     _malId = malId;
@@ -25,7 +25,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   void initState() {
     super.initState();
     _getAnimeInfo();
-    _getAnimePictures();
+    _getAnimeMedia();
   }
 
   void _getAnimeInfo() async {
@@ -35,10 +35,12 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     });
   }
 
-  void _getAnimePictures() async {
-    final pictures = await getAnime(_malId, PICTURES);
+  void _getAnimeMedia() async {
+    final Map pictures = await getAnime(_malId, PICTURES);
+    final Map videos = await getAnime(_malId, VIDEOS);
+    List media = List()..addAll(videos[PROMO])..addAll(pictures[PICTURES]);
     setState(() {
-      _pictures = pictures[PICTURES];
+      _media = media;
     });
   }
 
@@ -84,7 +86,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             ),
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
-              MediaTab(trailerUrl: _anime == null ? '' : _anime[TRAILER_URL], pictures: _pictures),
+              MediaTab(media: _media),
               Center(child: Text('PICTURES')),
               Center(child: Text('EPISODES')),
               Center(child: Text('CHARACTERS'))
