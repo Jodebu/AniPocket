@@ -20,5 +20,6 @@ const String TOP = 'top';
 //UI related
 const String LOADING = 'Loading...';
 const String ENGLISH = 'English:';
+const String NO_TITLE = 'No title found';
 const String STANDARD_TITLE = 'Standard title:';
-const String JAPANESE = 'Japanese';
+const String JAPANESE = 'Japanese:';

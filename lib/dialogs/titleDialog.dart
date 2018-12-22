@@ -20,13 +20,13 @@ class TitleDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(STANDARD_TITLE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE]),
+              Text(titles[TITLE] == null ? NO_TITLE : titles[TITLE]),
               Divider(),
               Text(ENGLISH, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE_ENGLISH]),
+              Text(titles[TITLE_ENGLISH] == null ? NO_TITLE : titles[TITLE_ENGLISH]),
               Divider(),
               Text(JAPANESE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE_JAPANESE]),
+              Text(titles[TITLE_JAPANESE] == null ? NO_TITLE : titles[TITLE_JAPANESE]),
             ]),
       ),
       actions: <Widget>[
