@@ -9,6 +9,7 @@ const String EPISODES = 'episodes';
 const String IMAGE_URL = 'image_url';
 const String MAL_ID = 'mal_id';
 const String MANGA = 'manga';
+const String RATING = 'rating';
 const String STATUS = 'status';
 const String SYNOPSIS = 'synopsis';
 const String TITLE = 'title';

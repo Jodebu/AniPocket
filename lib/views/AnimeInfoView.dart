@@ -11,7 +11,8 @@ class AnimeInfoView extends StatelessWidget {
       CircularProgressIndicator();
 
   void _showTitleDialog(BuildContext context, Map<String, String> titles) {
-    showDialog(context: context, builder: (context) => TitleDialog(titles: titles));
+    showDialog(
+        context: context, builder: (context) => TitleDialog(titles: titles));
   }
 
   Map<String, String> _getTitles() {
@@ -59,22 +60,29 @@ class AnimeInfoView extends StatelessWidget {
                         softWrap: false,
                         overflow: TextOverflow.ellipsis,
                       ),
-                      onTap: () =>_showTitleDialog(context, _getTitles()),
+                      onTap: () => _showTitleDialog(context, _getTitles()),
                     ),
                     Divider(),
-                    IconTextPair(
-                      icon: Icon(Icons.local_movies,
-                          color: Theme.of(context).primaryColor),
-                      text: Text(animeInfo == null
-                          ? LOADING
-                          : animeInfo[TYPE].toString()),
-                    ),
-                    IconTextPair(
-                      icon:
-                          Icon(Icons.tv, color: Theme.of(context).primaryColor),
-                      text: Text(animeInfo == null
-                          ? LOADING
-                          : animeInfo[EPISODES].toString()),
+                    Row(
+                      mainAxisSize: MainAxisSize.max,
+                      mainAxisAlignment: MainAxisAlignment.start,
+                      children: [
+                        IconTextPair(
+                          icon: Icon(Icons.local_movies,
+                              color: Theme.of(context).primaryColor),
+                          text: Text(animeInfo == null
+                              ? LOADING
+                              : animeInfo[TYPE].toString()),
+                        ),
+                        Padding(padding: EdgeInsets.only(left: 8.0)),
+                        IconTextPair(
+                          icon: Icon(Icons.tv,
+                              color: Theme.of(context).primaryColor),
+                          text: Text(animeInfo == null
+                              ? LOADING
+                              : animeInfo[EPISODES].toString()),
+                        ),
+                      ],
                     ),
                     IconTextPair(
                       icon: Icon(Icons.live_tv,
@@ -83,10 +91,25 @@ class AnimeInfoView extends StatelessWidget {
                           Text(animeInfo == null ? LOADING : animeInfo[STATUS]),
                     ),
                     IconTextPair(
-                      icon: Icon(Icons.live_tv,
+                      icon: Icon(Icons.date_range,
+                          color: Theme.of(context).primaryColor),
+                      text: Text(animeInfo == null
+                          ? LOADING
+                          : animeInfo[AIRED]['string']),
+                          //TODO it can overflow when the date is too long, try to simplify it
+                    ),
+                    IconTextPair(
+                      icon: Icon(Icons.timer,
                           color: Theme.of(context).primaryColor),
                       text: Text(
                           animeInfo == null ? LOADING : animeInfo[DURATION]),
+                    ),
+                    IconTextPair(
+                      icon: Icon(Icons.outlined_flag,
+                          color: Theme.of(context).primaryColor),
+                      text: Text(animeInfo == null
+                          ? LOADING
+                          : animeInfo[RATING].split('(')[0]),
                     ),
                   ],
                 ),
