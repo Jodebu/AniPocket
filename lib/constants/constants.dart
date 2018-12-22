@@ -18,4 +18,7 @@ const String TYPE = 'type';
 const String TOP = 'top';
 
 //UI related
-const String LOADING = 'Loading';
+const String LOADING = 'Loading...';
+const String ENGLISH = 'English:';
+const String STANDARD_TITLE = 'Standard title:';
+const String JAPANESE = 'Japanese';

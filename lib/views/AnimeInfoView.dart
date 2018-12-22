@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:anipocket/dialogs/titleDialog.dart';
 
 class AnimeInfoView extends StatelessWidget {
   AnimeInfoView({Key key, this.animeInfo}) : super(key: key);
@@ -8,6 +9,18 @@ class AnimeInfoView extends StatelessWidget {
   final Map animeInfo;
   final CircularProgressIndicator circularProgressIndicator =
       CircularProgressIndicator();
+
+  void _showTitleDialog(BuildContext context, Map<String, String> titles) {
+    showDialog(context: context, builder: (context) => TitleDialog(titles: titles));
+  }
+
+  Map<String, String> _getTitles() {
+    Map titles = Map<String, String>();
+    titles[TITLE] = animeInfo[TITLE];
+    titles[TITLE_ENGLISH] = animeInfo[TITLE_ENGLISH];
+    titles[TITLE_JAPANESE] = animeInfo[TITLE_JAPANESE];
+    return titles;
+  }
 
   @override
   Widget build(BuildContext context) {
@@ -37,13 +50,16 @@ class AnimeInfoView extends StatelessWidget {
                 child: Column(
                   crossAxisAlignment: CrossAxisAlignment.start,
                   children: [
-                    Text(
-                      animeInfo == null ? 'title' : animeInfo[TITLE],
-                      style:
-                          TextStyle(fontSize: 20, fontWeight: FontWeight.bold),
-                      maxLines: 2,
-                      softWrap: true,
-                      overflow: TextOverflow.ellipsis,
+                    InkResponse(
+                      child: Text(
+                        animeInfo == null ? LOADING : animeInfo[TITLE],
+                        style: TextStyle(
+                            fontSize: 20, fontWeight: FontWeight.bold),
+                        maxLines: 2,
+                        softWrap: false,
+                        overflow: TextOverflow.ellipsis,
+                      ),
+                      onTap: () =>_showTitleDialog(context, _getTitles()),
                     ),
                     Divider(),
                     IconTextPair(
@@ -63,9 +79,8 @@ class AnimeInfoView extends StatelessWidget {
                     IconTextPair(
                       icon: Icon(Icons.live_tv,
                           color: Theme.of(context).primaryColor),
-                      text: Text(animeInfo == null
-                          ? LOADING
-                          : animeInfo[STATUS]),
+                      text:
+                          Text(animeInfo == null ? LOADING : animeInfo[STATUS]),
                     ),
                     IconTextPair(
                       icon: Icon(Icons.live_tv,
@@ -73,18 +88,6 @@ class AnimeInfoView extends StatelessWidget {
                       text: Text(
                           animeInfo == null ? LOADING : animeInfo[DURATION]),
                     ),
-                    Text(
-                      animeInfo == null
-                          ? 'No english title provided'
-                          : animeInfo[TITLE_ENGLISH],
-                      softWrap: true,
-                    ),
-                    Text(
-                      animeInfo == null
-                          ? 'No japanese title provided'
-                          : animeInfo[TITLE_JAPANESE],
-                      softWrap: true,
-                    )
                   ],
                 ),
               ),
@@ -126,7 +129,12 @@ class IconTextPair extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return Row(
-        mainAxisAlignment: MainAxisAlignment.start, children: [icon, Padding(padding: EdgeInsets.only(left: 4.0),), text]);
+    return Row(mainAxisAlignment: MainAxisAlignment.start, children: [
+      icon,
+      Padding(
+        padding: EdgeInsets.only(left: 4.0),
+      ),
+      text
+    ]);
   }
 }
