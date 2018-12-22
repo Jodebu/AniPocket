@@ -21,8 +21,9 @@ const String TYPE = 'type';
 const String TOP = 'top';
 
 //UI related
-const String LOADING = 'Loading...';
-const String ENGLISH = 'English:';
-const String NO_TITLE = 'No title found';
-const String STANDARD_TITLE = 'Standard title:';
-const String JAPANESE = 'Japanese:';
+const String UI_GENRES = 'Genres';
+const String UI_LOADING = 'Loading...';
+const String UI_ENGLISH = 'English:';
+const String UI_NO_TITLE = 'No title found';
+const String UI_STANDARD_TITLE = 'Standard title:';
+const String UI_JAPANESE = 'Japanese:';

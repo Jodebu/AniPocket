@@ -63,7 +63,7 @@ class AnimeInfoView extends StatelessWidget {
                   children: [
                     InkResponse(
                       child: Text(
-                        animeInfo == null ? LOADING : animeInfo[TITLE],
+                        animeInfo == null ? UI_LOADING : animeInfo[TITLE],
                         style: TextStyle(
                             fontSize: 20, fontWeight: FontWeight.bold),
                         maxLines: 2,
@@ -81,7 +81,7 @@ class AnimeInfoView extends StatelessWidget {
                           icon: Icon(Icons.local_movies,
                               color: Theme.of(context).primaryColor),
                           text: Text(animeInfo == null
-                              ? LOADING
+                              ? UI_LOADING
                               : animeInfo[TYPE].toString()),
                         ),
                         Padding(padding: EdgeInsets.only(left: 8.0)),
@@ -89,7 +89,7 @@ class AnimeInfoView extends StatelessWidget {
                           icon: Icon(Icons.tv,
                               color: Theme.of(context).primaryColor),
                           text: Text(animeInfo == null
-                              ? LOADING
+                              ? UI_LOADING
                               : animeInfo[EPISODES].toString()),
                         ),
                       ],
@@ -97,27 +97,25 @@ class AnimeInfoView extends StatelessWidget {
                     IconTextPair(
                       icon: Icon(Icons.live_tv,
                           color: Theme.of(context).primaryColor),
-                      text:
-                          Text(animeInfo == null ? LOADING : animeInfo[STATUS]),
+                      text: Text(
+                          animeInfo == null ? UI_LOADING : animeInfo[STATUS]),
                     ),
                     IconTextPair(
                       icon: Icon(Icons.date_range,
                           color: Theme.of(context).primaryColor),
-                      text: Text(animeInfo == null
-                          ? LOADING
-                          : _getDates()),
+                      text: Text(animeInfo == null ? UI_LOADING : _getDates()),
                     ),
                     IconTextPair(
                       icon: Icon(Icons.timer,
                           color: Theme.of(context).primaryColor),
                       text: Text(
-                          animeInfo == null ? LOADING : animeInfo[DURATION]),
+                          animeInfo == null ? UI_LOADING : animeInfo[DURATION]),
                     ),
                     IconTextPair(
                       icon: Icon(Icons.outlined_flag,
                           color: Theme.of(context).primaryColor),
                       text: Text(animeInfo == null
-                          ? LOADING
+                          ? UI_LOADING
                           : animeInfo[RATING].split('(')[0]),
                     ),
                   ],
