@@ -126,26 +126,31 @@ class AnimeInfoView extends StatelessWidget {
             ],
           ),
           Divider(),
-          AnimeStatsView(animeInfo: animeInfo)
+          CategoriesView(genres: animeInfo == null ? List() : animeInfo[GENRES])
         ]));
   }
 }
 
-class AnimeStatsView extends StatelessWidget {
-  AnimeStatsView({Key key, this.animeInfo}) : super(key: key);
+class CategoriesView extends StatelessWidget {
+  CategoriesView({Key key, this.genres}) : super(key: key);
 
-  final Map animeInfo;
+  final List genres;
 
   @override
   Widget build(BuildContext context) {
-    return Column(crossAxisAlignment: CrossAxisAlignment.start, children: [
-      Text('General Information'),
-      Row(
-        mainAxisSize: MainAxisSize.max,
-        mainAxisAlignment: MainAxisAlignment.spaceAround,
-        children: [],
-      )
-    ]);
+    return Column(
+      crossAxisAlignment: CrossAxisAlignment.stretch,
+      children: [
+        Text(GENRES),
+        Wrap(
+          alignment: WrapAlignment.center,
+          spacing: 8.0,
+          runSpacing: -8.0,
+          children:
+              genres.map((genre) => Chip(label: Text(genre[NAME]))).toList(),
+        ),
+      ],
+    );
   }
 }
 
