@@ -43,7 +43,7 @@ class _AnimeListPageState extends State<AnimeListPage> {
   }
 
   void loadNextPage() async {
-    final animeListToAdd = await getTop(ANIME, ++ _page);
+    final animeListToAdd = await getTop(ANIME, ++_page);
     setState(() {
       _animeList.addAll(animeListToAdd);
     });

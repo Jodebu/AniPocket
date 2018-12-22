@@ -1,4 +1,5 @@
 import 'package:flutter/material.dart';
+import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/config/app_router.dart';
 import 'package:anipocket/constants/constants.dart';
 
@@ -23,6 +24,7 @@ class AnimeListView extends StatelessWidget {
           mainAxisSpacing: 2,
           crossAxisSpacing: 2,
         ),
+        itemCount: animeList.length + 1,
         itemBuilder: (context, i) {
           if (i >= animeList.length) {
             loadNextPage();
@@ -35,7 +37,7 @@ class AnimeListView extends StatelessWidget {
         },
       );
     });
-  }
+  } //TODO add something to indicate that the app is loading a new page!
 }
 
 class AnimeListItem extends StatelessWidget {
@@ -47,8 +49,10 @@ class AnimeListItem extends StatelessWidget {
   Widget build(BuildContext context) {
     return InkResponse(
       child: GridTile(
-        child: Image.network(
-          animeListItem[IMAGE_URL],
+        child: CachedNetworkImage(
+          imageUrl: animeListItem[IMAGE_URL],
+          placeholder: Center(child: CircularProgressIndicator()),
+          errorWidget: Icon(Icons.error),
           fit: BoxFit.cover,
         ),
         footer: GridTileBar(
@@ -59,8 +63,8 @@ class AnimeListItem extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.75),
         ),
       ),
-      onTap: () => AppRouter.router
-          .navigateTo(context, '/anime_detail/${animeListItem[MAL_ID]}/${animeListItem[TITLE]}'),
+      onTap: () => AppRouter.router.navigateTo(context,
+          '/anime_detail/${animeListItem[MAL_ID]}/${animeListItem[TITLE]}'),
     );
   }
 }
