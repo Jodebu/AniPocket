@@ -60,25 +60,25 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.info),
-                      text: Text('Info'),
+                      text: Text(UI_INFO),
                     ),
                   ),
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.photo),
-                      text: Text('Pictures'),
+                      text: Text(UI_PICTURES),
                     ),
                   ),
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.tv),
-                      text: Text('Episodes'),
+                      text: Text(UI_EPISODES),
                     ),
                   ),
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.people),
-                      text: Text('Characters'),
+                      text: Text(UI_CHARACTERS),
                     ),
                   ),
                 ],
@@ -87,7 +87,6 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
               MediaTab(media: _media),
-              Center(child: Text('PICTURES')),
               Center(child: Text('EPISODES')),
               Center(child: Text('CHARACTERS'))
             ])));

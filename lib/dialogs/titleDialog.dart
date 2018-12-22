@@ -20,17 +20,16 @@ class TitleDialog extends StatelessWidget {
             crossAxisAlignment: CrossAxisAlignment.start,
             children: [
               Text(UI_STANDARD_TITLE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles.containsKey(TITLE) ? titles[TITLE] : UI_NO_TITLE),
+              Text(titles[TITLE] ?? UI_NO_TITLE),
               Divider(),
               Text(UI_ENGLISH, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles.containsKey(TITLE_ENGLISH) ? titles[TITLE_ENGLISH] : UI_NO_TITLE),
+              Text(titles[TITLE_ENGLISH] ?? UI_NO_TITLE),
               Divider(),
               Text(UI_JAPANESE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles.containsKey(TITLE_JAPANESE) ? titles[TITLE_JAPANESE] : UI_NO_TITLE),
+              Text(titles[TITLE_JAPANESE] ?? UI_NO_TITLE),
             ]),
       ),
       actions: <Widget>[
-        // usually buttons at the bottom of the dialog
         FlatButton(
           child: Text("Close"),
           onPressed: () {

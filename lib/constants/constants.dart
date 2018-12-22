@@ -27,9 +27,12 @@ const String VIDEO_URL = 'video_url';
 const String VIDEOS = 'videos';
 
 //UI related
+const String UI_CHARACTERS = 'Characters';
 const String UI_GENRES = 'Genres';
 const String UI_LOADING = 'Loading...';
 const String UI_ENGLISH = 'English:';
+const String UI_EPISODES = 'Episodes';
+const String UI_INFO = 'Info';
 const String UI_JAPANESE = 'Japanese:';
 const String UI_NO_TITLE = 'No title found';
 const String UI_PICTURES = 'Pictures';
