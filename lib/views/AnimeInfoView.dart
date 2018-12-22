@@ -23,6 +23,16 @@ class AnimeInfoView extends StatelessWidget {
     return titles;
   }
 
+  String _getDates() {
+    DateTime from = DateTime.tryParse(animeInfo[AIRED]['from']);
+    String dates = '${from.day}/${from.month}/${from.year}';
+    if (animeInfo[AIRED]['to'] != null) {
+      DateTime to = DateTime.tryParse(animeInfo[AIRED]['to']);
+      dates = dates + ' - ${to.day}/${to.month}/${to.year}';
+    }
+    return dates;
+  }
+
   @override
   Widget build(BuildContext context) {
     return SingleChildScrollView(
@@ -95,8 +105,7 @@ class AnimeInfoView extends StatelessWidget {
                           color: Theme.of(context).primaryColor),
                       text: Text(animeInfo == null
                           ? LOADING
-                          : animeInfo[AIRED]['string']),
-                          //TODO it can overflow when the date is too long, try to simplify it
+                          : _getDates()),
                     ),
                     IconTextPair(
                       icon: Icon(Icons.timer,
