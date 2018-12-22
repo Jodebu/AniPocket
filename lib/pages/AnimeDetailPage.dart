@@ -36,7 +36,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 2,
+        length: 4,
         child: Scaffold(
             appBar: AppBar(
               title: Text(
@@ -44,19 +44,31 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
                 overflow: TextOverflow.fade,
               ),
               bottom: TabBar(
+                isScrollable: true,
                 tabs: [
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.info),
                       text: Text('Info'),
-                      mainAxisalignment: MainAxisAlignment.center,
+                    ),
+                  ),
+                  Tab(
+                    child: IconTextPair(
+                      icon: Icon(Icons.photo),
+                      text: Text('Pictures'),
                     ),
                   ),
                   Tab(
                     child: IconTextPair(
                       icon: Icon(Icons.tv),
                       text: Text('Episodes'),
-                      mainAxisalignment: MainAxisAlignment.center,
+                    ),
+                  ),
+                  Tab(
+                    child: IconTextPair(
+                      icon: Icon(Icons.people),
+                      text: Text('Characters'),
+                      //mainAxisalignment: MainAxisAlignment.center,
                     ),
                   ),
                 ],
@@ -64,7 +76,9 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             ),
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
-              Center(child: Text('EPISODES'))
+              Center(child: Text('PICTURES')),
+              Center(child: Text('EPISODES')),
+              Center(child: Text('CHARACTERS'))
             ])));
   }
 }
