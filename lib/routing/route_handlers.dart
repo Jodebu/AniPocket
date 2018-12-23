@@ -8,6 +8,8 @@ var animeDetailHandler = Handler(handlerFunc: (context, params) {
 });
 
 var carouselHandler = Handler(handlerFunc: (context, params) {
+  String id = params['id']?.first;
   String title = params['title']?.first;
-  return CarouselPage(title: title,);
+  String index = params['index']?.first;
+  return CarouselPage(malId: id, title: title, index: index);
 });

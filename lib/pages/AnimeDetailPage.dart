@@ -25,7 +25,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   void initState() {
     super.initState();
     _getAnimeInfo();
-    _getAnimeMedia();
+    _getAllAnimeMedia();
   }
 
   void _getAnimeInfo() async {
@@ -35,7 +35,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     });
   }
 
-  void _getAnimeMedia() async {
+  void _getAllAnimeMedia() async {
     final Map pictures = await getAnime(_malId, PICTURES);
     final Map videos = await getAnime(_malId, VIDEOS);
     List media = List()..addAll(videos[PROMO])..addAll(pictures[PICTURES]);
@@ -86,7 +86,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             ),
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
-              MediaTab(media: _media),
+              MediaTab(malId: _malId, title: widget.title, media: _media),
               Center(child: Text('EPISODES')),
               Center(child: Text('CHARACTERS'))
             ])));

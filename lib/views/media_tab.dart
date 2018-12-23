@@ -5,10 +5,17 @@ import 'package:url_launcher/url_launcher.dart';
 import 'package:anipocket/config/app_router.dart';
 
 class MediaTab extends StatelessWidget {
-  MediaTab({Key key, this.media}) : super(key: key);
+  MediaTab(
+      {Key key,
+      @required this.malId,
+      @required this.title,
+      @required this.media})
+      : super(key: key);
 
   static const int PORTRAIT_COLUMNS = 3;
   static const int LANDSCAPE_COLUMNS = 4;
+  final String malId;
+  final String title;
   final List media;
 
   @override
@@ -29,28 +36,33 @@ class MediaTab extends StatelessWidget {
                   ? VideoItem(
                       imageUrl: media[i][IMAGE_URL],
                       videoUrl: media[i][VIDEO_URL])
-                  : PictureItem(imageUrl: media[i][SMALL]));
+                  : PictureItem(malId: malId, title: title, media: media, index: i));
     });
   }
 }
 
 class PictureItem extends StatelessWidget {
-  final imageUrl;
+  final String malId;
+  final String title;
+  final List media;
+  final int index;
 
-  PictureItem({Key key, @required this.imageUrl}) : super(key: key);
+  PictureItem(
+      {Key key, @required this.malId, this.title = '', @required this.media, @required this.index})
+      : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return InkResponse(
       child: CachedNetworkImage(
-        imageUrl: imageUrl,
+        imageUrl: media[index][SMALL],
         placeholder: Center(child: CircularProgressIndicator()),
         errorWidget: Icon(Icons.error),
         fit: BoxFit.cover,
       ),
-      onTap: () => AppRouter.router.navigateTo(context,
-          '/carousel/Gallery'),
-      //TODO: image_view -> Fullscreen, Hero animations -> transitions
+      onTap: () => AppRouter.router
+          .navigateTo(context, '/carousel/$malId/$title/$index'),
+      //TODO: Hero animations -> transitions
     );
   }
 }

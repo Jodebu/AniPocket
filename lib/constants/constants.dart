@@ -8,6 +8,7 @@ const String DURATION = 'duration';
 const String EPISODES = 'episodes';
 const String GENRES = 'genres';
 const String IMAGE_URL = 'image_url';
+const String LARGE = 'large';
 const String MAL_ID = 'mal_id';
 const String MANGA = 'manga';
 const String NAME = 'name';
