@@ -6,3 +6,8 @@ var animeDetailHandler = Handler(handlerFunc: (context, params) {
   String title = params['title']?.first;
   return AnimeDetailPage(malId: id, title: title,);
 });
+
+var carouselHandler = Handler(handlerFunc: (context, params) {
+  String title = params['title']?.first;
+  return CarouselPage(title: title,);
+});

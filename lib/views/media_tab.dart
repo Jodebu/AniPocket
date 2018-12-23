@@ -2,6 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
+import 'package:anipocket/config/app_router.dart';
 
 class MediaTab extends StatelessWidget {
   MediaTab({Key key, this.media}) : super(key: key);
@@ -47,6 +48,8 @@ class PictureItem extends StatelessWidget {
         errorWidget: Icon(Icons.error),
         fit: BoxFit.cover,
       ),
+      onTap: () => AppRouter.router.navigateTo(context,
+          '/carousel/Gallery'),
       //TODO: image_view -> Fullscreen, Hero animations -> transitions
     );
   }
