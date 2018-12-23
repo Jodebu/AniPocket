@@ -64,29 +64,36 @@ class _CarouselPageState extends State<CarouselPage> {
   Widget build(BuildContext context) {
     return Scaffold(
       backgroundColor: Colors.black,
-      appBar: AppBar(
-        title: Text(widget.title),
-        backgroundColor: Colors.transparent,
-        toolbarOpacity: _appBarVisible ? 1.0 : 0.0,
-        elevation: _appBarVisible ? 4 : 0,
-      ),
       body: _loading
           ? Center(child: CircularProgressIndicator())
-          : Swiper(
-              itemCount: _media.length,
-              index: _index,
-              onIndexChanged: (i) => _updateIndex(i),
-              onTap: (i) => _toggleAppBarVisibility(),
-              itemBuilder: (context, i) {
-                return CachedNetworkImage(
-                  imageUrl: _media[i].containsKey(VIDEO_URL)
-                      ? _media[i][IMAGE_URL]
-                      : _media[i][LARGE],
-                  placeholder: Center(child: CircularProgressIndicator()),
-                  errorWidget: Icon(Icons.error),
-                  fit: BoxFit.contain,
-                );
-              },
+          : Stack(
+              children: [
+                Swiper(
+                  itemCount: _media.length,
+                  index: _index,
+                  onIndexChanged: (i) => _updateIndex(i),
+                  onTap: (i) => _toggleAppBarVisibility(),
+                  itemBuilder: (context, i) {
+                    return CachedNetworkImage(
+                      imageUrl: _media[i].containsKey(VIDEO_URL)
+                          ? _media[i][IMAGE_URL]
+                          : _media[i][LARGE],
+                      placeholder: Center(child: CircularProgressIndicator()),
+                      errorWidget: Icon(Icons.error),
+                      fit: BoxFit.contain,
+                    );
+                  },
+                ),
+                SizedBox.fromSize(
+                  size: Size.fromHeight(70.0),
+                  child: AppBar(
+                    title: Text(widget.title),
+                    backgroundColor: Colors.transparent,
+                    toolbarOpacity: _appBarVisible ? 1.0 : 0.0,
+                    elevation: _appBarVisible ? 4 : 0,
+                  ),
+                )
+              ],
             ),
     );
   }
