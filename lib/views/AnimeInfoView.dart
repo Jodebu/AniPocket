@@ -47,10 +47,10 @@ class AnimeInfoView extends StatelessWidget {
                   flex: 2,
                   fit: FlexFit.tight,
                   child: animeInfo == null
-                      ? circularProgressIndicator
+                      ? Center(child: circularProgressIndicator)
                       : CachedNetworkImage(
                           imageUrl: animeInfo[IMAGE_URL],
-                          placeholder: circularProgressIndicator,
+                          placeholder: Center(child: circularProgressIndicator),
                           errorWidget: Icon(Icons.error),
                         )),
               Padding(
