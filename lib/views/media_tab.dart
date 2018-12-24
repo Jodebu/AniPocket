@@ -32,33 +32,53 @@ class MediaTab extends StatelessWidget {
                 crossAxisSpacing: 2,
               ),
               itemCount: media == null ? 0 : media.length,
-              itemBuilder: (context, i) => media[i].containsKey(VIDEO_URL)
-                  ? VideoItem(
-                      imageUrl: media[i][IMAGE_URL],
-                      videoUrl: media[i][VIDEO_URL])
-                  : PictureItem(malId: malId, title: title, media: media, index: i));
+              itemBuilder: (context, i) =>
+                  MediaItem(malId: malId, title: title, media: media, index: i),
+            );
     });
   }
 }
 
-class PictureItem extends StatelessWidget {
+class MediaItem extends StatelessWidget {
   final String malId;
   final String title;
   final List media;
   final int index;
 
-  PictureItem(
-      {Key key, @required this.malId, this.title = '', @required this.media, @required this.index})
+  MediaItem(
+      {Key key,
+      @required this.malId,
+      this.title = '',
+      @required this.media,
+      @required this.index})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
+    var _isVideo = media[index].containsKey(VIDEO_URL);
+    
     return InkResponse(
-      child: CachedNetworkImage(
-        imageUrl: media[index][SMALL],
-        placeholder: Center(child: CircularProgressIndicator()),
-        errorWidget: Icon(Icons.error),
-        fit: BoxFit.cover,
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CachedNetworkImage(
+            imageUrl: _isVideo ? media[index][IMAGE_URL] : media[index][SMALL],
+            placeholder: Center(child: CircularProgressIndicator()),
+            errorWidget: Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
+          PositionedDirectional(
+            bottom: 4.0,
+            end: 4.0,
+            child: Icon(
+              Icons.play_circle_filled,
+              size: 50,
+              color: _isVideo
+                  ? Theme.of(context).primaryColorDark
+                  : Colors.transparent,
+            ),
+          )
+        ],
       ),
       onTap: () => AppRouter.router
           .navigateTo(context, '/carousel/$malId/$title/$index'),

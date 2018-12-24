@@ -17,6 +17,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   String _malId;
   Map _anime;
   List _media;
+  List _episodes;
 
   _AnimeDetailPageState(String malId) {
     _malId = malId;
@@ -26,6 +27,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     super.initState();
     _getAnimeInfo();
     _getAllAnimeMedia();
+    _getAllEpisodes();
   }
 
   void _getAnimeInfo() async {
@@ -42,6 +44,25 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     setState(() {
       _media = media;
     });
+  }
+
+  void _getAllEpisodes() async {
+    int page = 1;
+    final Map ep = await getAnime(_malId, EPISODES, page);
+    int lastPage = ep[EPISODES_LAST_PAGE];
+    List episodes = ep[EPISODES];
+    while (lastPage > page) {
+      List nextPage = await _getAndAddEpisodePage(++page);
+      episodes.add(nextPage);
+    }
+    setState(() {
+          _episodes = episodes;
+        });
+  }
+
+  dynamic _getAndAddEpisodePage(int page) async {
+    final Map episodes = await getAnime(_malId, EPISODES, page);
+    return episodes[EPISODES];
   }
 
   @override
