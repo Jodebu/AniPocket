@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:anipocket/config/app_router.dart';
@@ -20,8 +20,8 @@ class MediaTab extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    return OrientationBuilder(builder: (context, orientation) {
-      return media == null
+    return OrientationBuilder(
+      builder: (context, orientation) => media == null
           ? Center(child: CircularProgressIndicator())
           : GridView.builder(
               gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
@@ -34,8 +34,8 @@ class MediaTab extends StatelessWidget {
               itemCount: media == null ? 0 : media.length,
               itemBuilder: (context, i) =>
                   MediaItem(malId: malId, title: title, media: media, index: i),
-            );
-    });
+            ),
+    );
   }
 }
 
@@ -56,7 +56,7 @@ class MediaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _isVideo = media[index].containsKey(VIDEO_URL);
-    
+
     return InkResponse(
       child: Stack(
         fit: StackFit.expand,

@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 
 class EpisodesTab extends StatelessWidget {
   EpisodesTab({Key key, @required this.title, @required this.episodes})
@@ -37,12 +37,13 @@ class EpisodesTab extends StatelessWidget {
                       dense: true,
                     ),
                     ListTile(
-                        leading: Icon(Icons.date_range),
-                        title: Text(episodes[i][AIRED] == null
-                            ? UI_NO_DATE
-                            : episodes[i][AIRED][STRING]),
-                        dense: true,
-                        subtitle: _getIfFillerOrRecap(i)),
+                      leading: Icon(Icons.date_range),
+                      title: Text(episodes[i][AIRED] == null
+                          ? UI_NO_DATE
+                          : episodes[i][AIRED][STRING]),
+                      subtitle: _getIfFillerOrRecap(i),
+                      dense: true,
+                    ),
                   ],
                 ),
           );

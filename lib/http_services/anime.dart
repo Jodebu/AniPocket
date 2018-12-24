@@ -1,6 +1,6 @@
 import 'http.dart';
 import 'endpoints.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 
 Future getAnime(String malId, [String request = '', int param]) async {
   var uri = '${Endpoints.anime}/$malId';

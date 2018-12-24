@@ -1,28 +1,27 @@
 import 'package:flutter/material.dart';
-import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/views/index.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/http_services/anime.dart';
+import 'package:anipocket/constants.dart';
 
-class AnimeListPage extends StatefulWidget {
-  AnimeListPage({Key key, this.animeList}) : super(key: key);
+class AnimeGridPage extends StatefulWidget {
+  AnimeGridPage({Key key, this.animeList}) : super(key: key);
 
-  // Fields in a Widget subclass are always marked "final".
   final List animeList;
 
   @override
-  _AnimeListPageState createState() {
+  _AnimeGridPageState createState() {
     return animeList != null
-        ? _AnimeListPageState(animeList)
-        : _AnimeListPageState([]);
+        ? _AnimeGridPageState(animeList)
+        : _AnimeGridPageState([]);
   }
 }
 
-class _AnimeListPageState extends State<AnimeListPage> {
+class _AnimeGridPageState extends State<AnimeGridPage> {
   List _animeList;
   int _page = 1;
   bool _loading = true;
 
-  _AnimeListPageState(List animeList) {
+  _AnimeGridPageState(List animeList) {
     _animeList = animeList;
   }
 
@@ -56,12 +55,13 @@ class _AnimeListPageState extends State<AnimeListPage> {
         title: Text(APP_TITLE),
       ),
       body: Center(
-          child: _loading
-              ? CircularProgressIndicator()
-              : AnimeListView(
-                  animeList: _animeList,
-                  loadNextPage: loadNextPage,
-                )),
+        child: _loading
+            ? CircularProgressIndicator()
+            : AnimeGridView(
+                animeList: _animeList,
+                loadNextPage: loadNextPage,
+              ),
+      ),
     );
   }
 }

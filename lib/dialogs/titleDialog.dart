@@ -1,5 +1,5 @@
 import 'package:flutter/material.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 
 class TitleDialog extends StatelessWidget {
   TitleDialog({
@@ -15,19 +15,21 @@ class TitleDialog extends StatelessWidget {
       title: Text("Titles"),
       content: SingleChildScrollView(
         child: Column(
-            mainAxisSize: MainAxisSize.min,
-            mainAxisAlignment: MainAxisAlignment.start,
-            crossAxisAlignment: CrossAxisAlignment.start,
-            children: [
-              Text(UI_STANDARD_TITLE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE] ?? UI_NO_TITLE),
-              Divider(),
-              Text(UI_ENGLISH, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE_ENGLISH] ?? UI_NO_TITLE),
-              Divider(),
-              Text(UI_JAPANESE, style: TextStyle(fontWeight: FontWeight.bold)),
-              Text(titles[TITLE_JAPANESE] ?? UI_NO_TITLE),
-            ]),
+          mainAxisSize: MainAxisSize.min,
+          mainAxisAlignment: MainAxisAlignment.start,
+          crossAxisAlignment: CrossAxisAlignment.start,
+          children: [
+            Text(UI_STANDARD_TITLE,
+                style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(titles[TITLE] ?? UI_NO_TITLE),
+            Divider(),
+            Text(UI_ENGLISH, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(titles[TITLE_ENGLISH] ?? UI_NO_TITLE),
+            Divider(),
+            Text(UI_JAPANESE, style: TextStyle(fontWeight: FontWeight.bold)),
+            Text(titles[TITLE_JAPANESE] ?? UI_NO_TITLE),
+          ],
+        ),
       ),
       actions: <Widget>[
         FlatButton(

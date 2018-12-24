@@ -1,15 +1,15 @@
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/config/app_router.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 
-class AnimeListView extends StatelessWidget {
+class AnimeGridView extends StatelessWidget {
   static const int PORTRAIT_COLUMNS = 3;
   static const int LANDSCAPE_COLUMNS = 4;
   final List animeList;
   final Function() loadNextPage;
 
-  AnimeListView({Key key, @required this.animeList, this.loadNextPage})
+  AnimeGridView({Key key, @required this.animeList, this.loadNextPage})
       : super(key: key);
 
   @override
@@ -24,16 +24,12 @@ class AnimeListView extends StatelessWidget {
           mainAxisSpacing: 2,
           crossAxisSpacing: 2,
         ),
-        itemCount: animeList.length + 1,
+        itemCount: animeList.length,
         itemBuilder: (context, i) {
-          if (i >= animeList.length) {
+          if (i >= animeList.length -1) {
             loadNextPage();
-            print('loaded new page');
           }
-          print('generated item number $i');
-          return (i >= animeList.length)
-              ? Center(child: CircularProgressIndicator())
-              : AnimeListItem(animeListItem: animeList[i]);
+          return AnimeListItem(animeListItem: animeList[i]);
         },
       );
     });

@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/http_services/anime.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 import 'package:anipocket/views/index.dart';
 
 class AnimeDetailPage extends StatefulWidget {
@@ -61,6 +61,11 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     });
   }
 
+  dynamic _getAndAddEpisodePage(int page) async {
+    final Map episodes = await getAnime(_malId, EPISODES, page);
+    return episodes[EPISODES];
+  }
+
   List<Widget> _getTabs() {
     List<Widget> tabs = List();
     tabs.add(Tab(
@@ -93,17 +98,12 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
 
   List<Widget> _getTabViews() {
     List<Widget> tabViews = List();
-    tabViews.add(AnimeInfoView(animeInfo: _anime));
+    tabViews.add(InfoTab(animeInfo: _anime));
     tabViews.add(MediaTab(malId: _malId, title: widget.title, media: _media));
     if (_episodes != null)
       tabViews.add(EpisodesTab(title: widget.title, episodes: _episodes));
     tabViews.add(Center(child: Text('CHARACTERS')));
     return tabViews;
-  }
-
-  dynamic _getAndAddEpisodePage(int page) async {
-    final Map episodes = await getAnime(_malId, EPISODES, page);
-    return episodes[EPISODES];
   }
 
   @override

@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
-import 'package:anipocket/constants/constants.dart';
+import 'package:anipocket/constants.dart';
 import 'package:anipocket/http_services/anime.dart';
 import 'package:url_launcher/url_launcher.dart';
 
@@ -46,7 +46,7 @@ class _CarouselPageState extends State<CarouselPage> {
     });
   }
 
-  _toggleAppBarVisibility() {
+  void _toggleAppBarVisibility() {
     setState(() {
       _appBarVisible = !_appBarVisible;
     });
@@ -55,13 +55,13 @@ class _CarouselPageState extends State<CarouselPage> {
         : SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
-  _updateIndex(int index) {
+  void _updateIndex(int index) {
     setState(() {
       _index = index;
     });
   }
 
-  _launchVideo(videoUrl) async {
+  void _launchVideo(videoUrl) async {
     if (await canLaunch(videoUrl)) {
       await launch(videoUrl);
     } else {
@@ -85,8 +85,9 @@ class _CarouselPageState extends State<CarouselPage> {
                   onTap: (i) => _toggleAppBarVisibility(),
                   itemBuilder: (context, i) {
                     return CachedNetworkImage(
-                      imageUrl:
-                          _media[i].containsKey(VIDEO_URL) ? _media[i][IMAGE_URL] : _media[i][LARGE],
+                      imageUrl: _media[i].containsKey(VIDEO_URL)
+                          ? _media[i][IMAGE_URL]
+                          : _media[i][LARGE],
                       placeholder: Center(child: CircularProgressIndicator()),
                       errorWidget: Icon(Icons.error),
                       fit: BoxFit.contain,
@@ -101,7 +102,7 @@ class _CarouselPageState extends State<CarouselPage> {
                     toolbarOpacity: _appBarVisible ? 1.0 : 0.0,
                     elevation: _appBarVisible ? 4 : 0,
                   ),
-                )
+                ),
               ],
             ),
       floatingActionButton: Opacity(
@@ -112,9 +113,7 @@ class _CarouselPageState extends State<CarouselPage> {
             icon: Icon(Icons.play_circle_filled),
             label: Text(UI_PLAY_IN_YOUTUBE),
             tooltip: UI_PLAY_IN_YOUTUBE,
-            onPressed: _isVideo
-                ? () => _launchVideo(_media[_index][VIDEO_URL])
-                : () {},
+            onPressed: () => _launchVideo(_media[_index][VIDEO_URL]),
             backgroundColor: _isVideo ? null : Colors.transparent,
           ),
         ),
