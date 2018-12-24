@@ -2,10 +2,13 @@ import 'http.dart';
 import 'endpoints.dart';
 import 'package:anipocket/constants/constants.dart';
 
-Future getAnime(String malId, [String request = '']) async {
+Future getAnime(String malId, [String request = '', int param]) async {
   var uri = '${Endpoints.anime}/$malId';
   if (request != '') {
     uri = uri + '/$request';
+  }
+  if (param != null) {
+    uri = uri + '/$param';
   }
   final Map payload = await httpGet(uri);
   return payload;

@@ -49,15 +49,56 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   void _getAllEpisodes() async {
     int page = 1;
     final Map ep = await getAnime(_malId, EPISODES, page);
+    if (ep.containsKey(ERROR)) return;
     int lastPage = ep[EPISODES_LAST_PAGE];
     List episodes = ep[EPISODES];
     while (lastPage > page) {
       List nextPage = await _getAndAddEpisodePage(++page);
-      episodes.add(nextPage);
+      episodes.addAll(nextPage);
     }
     setState(() {
-          _episodes = episodes;
-        });
+      _episodes = episodes;
+    });
+  }
+
+  List<Widget> _getTabs() {
+    List<Widget> tabs = List();
+    tabs.add(Tab(
+      child: IconTextPair(
+        icon: Icon(Icons.info),
+        text: Text(UI_INFO),
+      ),
+    ));
+    tabs.add(Tab(
+      child: IconTextPair(
+        icon: Icon(Icons.photo),
+        text: Text(UI_PICTURES),
+      ),
+    ));
+    if (_episodes != null) {
+      tabs.add(Tab(
+          child: IconTextPair(
+        icon: Icon(Icons.tv),
+        text: Text(UI_EPISODES),
+      )));
+    }
+    tabs.add(Tab(
+      child: IconTextPair(
+        icon: Icon(Icons.people),
+        text: Text(UI_CHARACTERS),
+      ),
+    ));
+    return tabs;
+  }
+
+  List<Widget> _getTabViews() {
+    List<Widget> tabViews = List();
+    tabViews.add(AnimeInfoView(animeInfo: _anime));
+    tabViews.add(MediaTab(malId: _malId, title: widget.title, media: _media));
+    if (_episodes != null)
+      tabViews.add(EpisodesTab(title: widget.title, episodes: _episodes));
+    tabViews.add(Center(child: Text('CHARACTERS')));
+    return tabViews;
   }
 
   dynamic _getAndAddEpisodePage(int page) async {
@@ -68,48 +109,22 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   @override
   Widget build(BuildContext context) {
     return DefaultTabController(
-        length: 4,
-        child: Scaffold(
-            appBar: AppBar(
-              title: Text(
-                widget.title,
-                overflow: TextOverflow.fade,
-              ),
-              bottom: TabBar(
-                isScrollable: true,
-                tabs: [
-                  Tab(
-                    child: IconTextPair(
-                      icon: Icon(Icons.info),
-                      text: Text(UI_INFO),
-                    ),
-                  ),
-                  Tab(
-                    child: IconTextPair(
-                      icon: Icon(Icons.photo),
-                      text: Text(UI_PICTURES),
-                    ),
-                  ),
-                  Tab(
-                    child: IconTextPair(
-                      icon: Icon(Icons.tv),
-                      text: Text(UI_EPISODES),
-                    ),
-                  ),
-                  Tab(
-                    child: IconTextPair(
-                      icon: Icon(Icons.people),
-                      text: Text(UI_CHARACTERS),
-                    ),
-                  ),
-                ],
-              ),
-            ),
-            body: TabBarView(children: [
-              AnimeInfoView(animeInfo: _anime),
-              MediaTab(malId: _malId, title: widget.title, media: _media),
-              Center(child: Text('EPISODES')),
-              Center(child: Text('CHARACTERS'))
-            ])));
+      length: 4,
+      child: Scaffold(
+        appBar: AppBar(
+          title: Text(
+            widget.title,
+            overflow: TextOverflow.fade,
+          ),
+          bottom: TabBar(
+            isScrollable: true,
+            tabs: _getTabs(),
+          ),
+        ),
+        body: TabBarView(
+          children: _getTabViews(),
+        ),
+      ),
+    );
   }
 }
