@@ -4,6 +4,7 @@ import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:anipocket/http_services/anime.dart';
+import 'package:url_launcher/url_launcher.dart';
 
 class CarouselPage extends StatefulWidget {
   final String malId;
@@ -60,8 +61,17 @@ class _CarouselPageState extends State<CarouselPage> {
     });
   }
 
+  _launchVideo(videoUrl) async {
+    if (await canLaunch(videoUrl)) {
+      await launch(videoUrl);
+    } else {
+      throw 'Could not launch $videoUrl';
+    }
+  }
+
   @override
   Widget build(BuildContext context) {
+    bool _isVideo = _loading ? false : _media[_index].containsKey(VIDEO_URL);
     return Scaffold(
       backgroundColor: Colors.black,
       body: _loading
@@ -75,9 +85,8 @@ class _CarouselPageState extends State<CarouselPage> {
                   onTap: (i) => _toggleAppBarVisibility(),
                   itemBuilder: (context, i) {
                     return CachedNetworkImage(
-                      imageUrl: _media[i].containsKey(VIDEO_URL)
-                          ? _media[i][IMAGE_URL]
-                          : _media[i][LARGE],
+                      imageUrl:
+                          _media[i].containsKey(VIDEO_URL) ? _media[i][IMAGE_URL] : _media[i][LARGE],
                       placeholder: Center(child: CircularProgressIndicator()),
                       errorWidget: Icon(Icons.error),
                       fit: BoxFit.contain,
@@ -95,6 +104,21 @@ class _CarouselPageState extends State<CarouselPage> {
                 )
               ],
             ),
+      floatingActionButton: Opacity(
+        opacity: _isVideo ? 1.0 : 0.0,
+        child: IgnorePointer(
+          ignoring: _isVideo ? false : true,
+          child: FloatingActionButton.extended(
+            icon: Icon(Icons.play_circle_filled),
+            label: Text(UI_PLAY_IN_YOUTUBE),
+            tooltip: UI_PLAY_IN_YOUTUBE,
+            onPressed: _isVideo
+                ? () => _launchVideo(_media[_index][VIDEO_URL])
+                : () {},
+            backgroundColor: _isVideo ? null : Colors.transparent,
+          ),
+        ),
+      ),
     );
   }
 }

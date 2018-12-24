@@ -1,6 +1,7 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:url_launcher/url_launcher.dart';
 import 'package:anipocket/config/app_router.dart';
 
 class MediaTab extends StatelessWidget {
@@ -55,7 +56,7 @@ class MediaItem extends StatelessWidget {
   @override
   Widget build(BuildContext context) {
     var _isVideo = media[index].containsKey(VIDEO_URL);
-
+    
     return InkResponse(
       child: Stack(
         fit: StackFit.expand,
@@ -82,6 +83,49 @@ class MediaItem extends StatelessWidget {
       onTap: () => AppRouter.router
           .navigateTo(context, '/carousel/$malId/$title/$index'),
       //TODO: Hero animations -> transitions
+    );
+  }
+}
+
+class VideoItem extends StatelessWidget {
+  final imageUrl;
+  final videoUrl;
+
+  VideoItem({Key key, @required this.imageUrl, @required this.videoUrl})
+      : super(key: key);
+
+  _launchVideo() async {
+    if (await canLaunch(videoUrl)) {
+      await launch(videoUrl);
+    } else {
+      throw 'Could not launch $videoUrl';
+    }
+  }
+
+  @override
+  Widget build(BuildContext context) {
+    return InkResponse(
+      child: Stack(
+        fit: StackFit.expand,
+        children: [
+          CachedNetworkImage(
+            imageUrl: imageUrl,
+            placeholder: Center(child: CircularProgressIndicator()),
+            errorWidget: Icon(Icons.error),
+            fit: BoxFit.cover,
+          ),
+          PositionedDirectional(
+            bottom: 4.0,
+            end: 4.0,
+            child: Icon(
+              Icons.play_circle_filled,
+              size: 50,
+              color: Theme.of(context).primaryColorDark,
+            ),
+          )
+        ],
+      ),
+      onTap: () => _launchVideo(),
     );
   }
 }
