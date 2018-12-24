@@ -8,6 +8,17 @@ class EpisodesTab extends StatelessWidget {
   final String title;
   final List episodes;
 
+  Text _getIfFillerOrRecap(int index) {
+    List params = List();
+    if (episodes[index][FILLER]) params.add(FILLER);
+    if (episodes[index][RECAP]) params.add(RECAP);
+    if (params.isEmpty) {
+      return null;
+    }
+    String message = 'This is a ${params.join('and')} episode';
+    return Text(message);
+  }
+
   @override
   Widget build(BuildContext context) {
     return episodes == null
@@ -21,9 +32,17 @@ class EpisodesTab extends StatelessWidget {
                   children: <Widget>[
                     ListTile(
                       leading: Icon(Icons.info),
-                      title: Text(episodes[i][TITLE_JAPANESE]),
-                      subtitle: Text(episodes[i][TITLE_ROMANJI]),
-                    )
+                      title: Text(episodes[i][TITLE_JAPANESE] ?? UI_NO_TITLE),
+                      subtitle: Text(episodes[i][TITLE_ROMANJI] ?? UI_NO_TITLE),
+                      dense: true,
+                    ),
+                    ListTile(
+                        leading: Icon(Icons.date_range),
+                        title: Text(episodes[i][AIRED] == null
+                            ? UI_NO_DATE
+                            : episodes[i][AIRED][STRING]),
+                        dense: true,
+                        subtitle: _getIfFillerOrRecap(i)),
                   ],
                 ),
           );
