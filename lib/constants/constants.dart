@@ -6,6 +6,7 @@ const String AIRED = 'aired';
 const String ANIME = 'anime';
 const String DURATION = 'duration';
 const String EPISODES = 'episodes';
+const String EPISODES_LAST_PAGE = 'episodes_last_page';
 const String GENRES = 'genres';
 const String IMAGE_URL = 'image_url';
 const String LARGE = 'large';
