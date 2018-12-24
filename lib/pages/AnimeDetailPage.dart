@@ -53,7 +53,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     List episodes = ep[EPISODES];
     while (lastPage > page) {
       List nextPage = await _getAndAddEpisodePage(++page);
-      episodes.add(nextPage);
+      episodes.addAll(nextPage);
     }
     setState(() {
           _episodes = episodes;
@@ -108,7 +108,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             body: TabBarView(children: [
               AnimeInfoView(animeInfo: _anime),
               MediaTab(malId: _malId, title: widget.title, media: _media),
-              Center(child: Text('EPISODES')),
+              EpisodesTab(title: widget.title, episodes: _episodes),
               Center(child: Text('CHARACTERS'))
             ])));
   }
