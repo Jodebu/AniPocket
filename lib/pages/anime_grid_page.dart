@@ -62,6 +62,34 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
                 loadNextPage: loadNextPage,
               ),
       ),
+      drawer: Drawer(
+        child: ListView(
+          padding: EdgeInsets.zero,
+          children: [
+            DrawerHeader(
+              child: Center(
+                  child: Text(
+                APP_TITLE,
+                style: TextStyle(
+                  color: Colors.white,
+                  fontWeight: FontWeight.bold,
+                ),
+              )),
+              decoration: BoxDecoration(
+                color: Theme.of(context).primaryColor,
+              ),
+            ),
+            ListTile(
+              title: Text(UI_ADVANCED_SEARCH),
+              onTap: () {},
+            ),
+            ListTile(
+              title: Text(UI_GENRES),
+              onTap: () {},
+            ),
+          ],
+        ),
+      ),
     );
   }
 }

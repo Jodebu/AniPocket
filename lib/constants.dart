@@ -37,6 +37,7 @@ const String VIDEO_URL = 'video_url';
 const String VIDEOS = 'videos';
 
 //UI related
+const String UI_ADVANCED_SEARCH = 'Advanced search';
 const String UI_CHARACTERS = 'Characters';
 const String UI_GENRES = 'Genres';
 const String UI_LOADING = 'Loading...';
