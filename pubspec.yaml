@@ -23,6 +23,8 @@ dependencies:
   cached_network_image: ^0.5.1
   url_launcher: ^4.0.3
   flutter_swiper: ^1.1.4
+  jikan_dart: ^0.9.0
+  built_value: ^6.5.0
 
 dev_dependencies:
   flutter_test:
