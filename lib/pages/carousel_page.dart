@@ -1,9 +1,10 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:flutter/services.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:flutter_swiper/flutter_swiper.dart';
 import 'package:anipocket/constants.dart';
-import 'package:anipocket/http_services/anime.dart';
+import 'package:jikan_dart/jikan_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class CarouselPage extends StatefulWidget {
@@ -22,24 +23,26 @@ class CarouselPage extends StatefulWidget {
 }
 
 class _CarouselPageState extends State<CarouselPage> {
+  JikanApi jikan = JikanApi();
+
   bool _appBarVisible = false;
   bool _loading = true;
-  List _media = List();
+  List<dynamic> _media = List();
   int _index;
 
   void initState() {
     super.initState();
     _getAllAnimeMedia();
     setState(() {
-      _index = int.tryParse(widget.index);
+      _index = int.parse(widget.index);
     });
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   void _getAllAnimeMedia() async {
-    final Map pictures = await getAnime(widget.malId, PICTURES);
-    final Map videos = await getAnime(widget.malId, VIDEOS);
-    List media = List()..addAll(videos[PROMO])..addAll(pictures[PICTURES]);
+    final BuiltList<Picture> pictures = await jikan.getAnimePictures(int.parse(widget.malId));
+    final BuiltList<Promo> videos = await jikan.getAnimeVideos(int.parse(widget.malId));
+    List media = List()..addAll(videos.toList())..addAll(pictures.toList());
     setState(() {
       _media = media;
       _loading = false;
@@ -53,6 +56,7 @@ class _CarouselPageState extends State<CarouselPage> {
     _appBarVisible
         ? SystemChrome.setEnabledSystemUIOverlays(SystemUiOverlay.values)
         : SystemChrome.setEnabledSystemUIOverlays([]);
+    //TODO Cuidado cuando se sale del carrusel sin que se vea el toolbar
   }
 
   void _updateIndex(int index) {
@@ -71,7 +75,7 @@ class _CarouselPageState extends State<CarouselPage> {
 
   @override
   Widget build(BuildContext context) {
-    bool _isVideo = _loading ? false : _media[_index].containsKey(VIDEO_URL);
+    bool _isVideo = _loading ? false : _media[_index] is Promo;
     return Scaffold(
       backgroundColor: Colors.black,
       body: _loading
@@ -85,9 +89,9 @@ class _CarouselPageState extends State<CarouselPage> {
                   onTap: (i) => _toggleAppBarVisibility(),
                   itemBuilder: (context, i) {
                     return CachedNetworkImage(
-                      imageUrl: _media[i].containsKey(VIDEO_URL)
-                          ? _media[i][IMAGE_URL]
-                          : _media[i][LARGE],
+                      imageUrl: _media[i] is Promo
+                          ? _media[i].imageUrl
+                          : _media[i].large,
                       placeholder: Center(child: CircularProgressIndicator()),
                       errorWidget: Icon(Icons.error),
                       fit: BoxFit.contain,
@@ -113,7 +117,7 @@ class _CarouselPageState extends State<CarouselPage> {
             icon: Icon(Icons.play_circle_filled),
             label: Text(UI_PLAY_IN_YOUTUBE),
             tooltip: UI_PLAY_IN_YOUTUBE,
-            onPressed: () => _launchVideo(_media[_index][VIDEO_URL]),
+            onPressed: () => _launchVideo(_media[_index].videoUrl),
             backgroundColor: _isVideo ? null : Colors.transparent,
           ),
         ),

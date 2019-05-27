@@ -1,6 +1,6 @@
 import 'package:flutter/material.dart';
-import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
+import 'package:jikan_dart/jikan_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 import 'package:anipocket/config/app_router.dart';
 
@@ -14,7 +14,7 @@ class MediaTab extends StatelessWidget {
 
   static const int PORTRAIT_COLUMNS = 3;
   static const int LANDSCAPE_COLUMNS = 4;
-  final String malId;
+  final int malId;
   final String title;
   final List media;
 
@@ -40,7 +40,7 @@ class MediaTab extends StatelessWidget {
 }
 
 class MediaItem extends StatelessWidget {
-  final String malId;
+  final int malId;
   final String title;
   final List media;
   final int index;
@@ -55,14 +55,14 @@ class MediaItem extends StatelessWidget {
 
   @override
   Widget build(BuildContext context) {
-    var _isVideo = media[index].containsKey(VIDEO_URL);
+    var _isVideo = media[index] is Promo;
 
     return InkResponse(
       child: Stack(
         fit: StackFit.expand,
         children: [
           CachedNetworkImage(
-            imageUrl: _isVideo ? media[index][IMAGE_URL] : media[index][SMALL],
+            imageUrl: _isVideo ? media[index].imageUrl : media[index].small,
             placeholder: Center(child: CircularProgressIndicator()),
             errorWidget: Icon(Icons.error),
             fit: BoxFit.cover,

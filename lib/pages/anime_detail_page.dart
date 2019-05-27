@@ -1,7 +1,9 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/constants.dart';
 import 'package:anipocket/views/index.dart';
+import 'package:jikan_dart/jikan_dart.dart';
 
 class AnimeDetailPage extends StatefulWidget {
   AnimeDetailPage({Key key, this.malId, this.title}) : super(key: key);
@@ -14,13 +16,15 @@ class AnimeDetailPage extends StatefulWidget {
 }
 
 class _AnimeDetailPageState extends State<AnimeDetailPage> {
-  String _malId;
+  final JikanApi jikan = JikanApi();
+
+  int _malId;
   Map _anime;
-  List _media;
+  List<dynamic> _media;
   List _episodes;
 
   _AnimeDetailPageState(String malId) {
-    _malId = malId;
+    _malId = int.parse(malId);
   }
 
   void initState() {
@@ -31,16 +35,16 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   }
 
   void _getAnimeInfo() async {
-    final anime = await getAnime(_malId);
+    final anime = await getAnime(_malId.toString());
     setState(() {
       _anime = anime;
     });
   }
 
   void _getAllAnimeMedia() async {
-    final Map pictures = await getAnime(_malId, PICTURES);
-    final Map videos = await getAnime(_malId, VIDEOS);
-    List media = List()..addAll(videos[PROMO])..addAll(pictures[PICTURES]);
+    final BuiltList<Picture> pictures = await jikan.getAnimePictures(_malId);
+    final BuiltList<Promo> videos = await jikan.getAnimeVideos(_malId);
+    List media = List()..addAll(videos.toList())..addAll(pictures.toList());
     setState(() {
       _media = media;
     });
@@ -48,7 +52,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
 
   void _getAllEpisodes() async {
     int page = 1;
-    final Map ep = await getAnime(_malId, EPISODES, page);
+    final Map ep = await getAnime(_malId.toString(), EPISODES, page);
     if (ep.containsKey(ERROR)) return;
     int lastPage = ep[EPISODES_LAST_PAGE];
     List episodes = ep[EPISODES];
@@ -62,7 +66,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   }
 
   dynamic _getAndAddEpisodePage(int page) async {
-    final Map episodes = await getAnime(_malId, EPISODES, page);
+    final Map episodes = await getAnime(_malId.toString(), EPISODES, page);
     return episodes[EPISODES];
   }
 
@@ -80,13 +84,12 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
         text: Text(UI_PICTURES),
       ),
     ));
-    if (_episodes != null) {
-      tabs.add(Tab(
-          child: IconTextPair(
+    tabs.add(Tab(
+      child: IconTextPair(
         icon: Icon(Icons.tv),
         text: Text(UI_EPISODES),
-      )));
-    }
+      ),
+    ));
     tabs.add(Tab(
       child: IconTextPair(
         icon: Icon(Icons.people),
@@ -100,8 +103,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     List<Widget> tabViews = List();
     tabViews.add(InfoTab(animeInfo: _anime));
     tabViews.add(MediaTab(malId: _malId, title: widget.title, media: _media));
-    if (_episodes != null)
-      tabViews.add(EpisodesTab(title: widget.title, episodes: _episodes));
+    tabViews.add(EpisodesTab(title: widget.title, episodes: _episodes));
     tabViews.add(Center(child: Text('CHARACTERS')));
     return tabViews;
   }
