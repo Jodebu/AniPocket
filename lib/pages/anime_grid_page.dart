@@ -1,12 +1,14 @@
+import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
 import 'package:anipocket/views/index.dart';
-import 'package:anipocket/http_services/anime.dart';
+// import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/constants.dart';
+import 'package:jikan_dart/jikan_dart.dart';
 
 class AnimeGridPage extends StatefulWidget {
   AnimeGridPage({Key key, this.animeList}) : super(key: key);
 
-  final List animeList;
+  final List<Top> animeList;
 
   @override
   _AnimeGridPageState createState() {
@@ -17,11 +19,13 @@ class AnimeGridPage extends StatefulWidget {
 }
 
 class _AnimeGridPageState extends State<AnimeGridPage> {
-  List _animeList;
+  final JikanApi jikan = JikanApi();
+  
+  List<Top> _animeList;
   int _page = 1;
   bool _loading = true;
 
-  _AnimeGridPageState(List animeList) {
+  _AnimeGridPageState(List<Top> animeList) {
     _animeList = animeList;
   }
 
@@ -34,15 +38,15 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
     setState(() {
       _loading = true;
     });
-    final animeList = await getTop(ANIME);
+    final BuiltList<Top> animeList = await jikan.getTop(TopType.anime);
     setState(() {
-      _animeList = animeList;
+      _animeList = animeList.toList(growable: true);
       _loading = false;
     });
   }
 
   void loadNextPage() async {
-    final animeListToAdd = await getTop(ANIME, ++_page);
+    final animeListToAdd = await jikan.getTop(TopType.anime, page: ++_page);
     setState(() {
       _animeList.addAll(animeListToAdd);
     });

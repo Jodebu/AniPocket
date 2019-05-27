@@ -1,3 +1,4 @@
+import 'dart:async';
 import 'http.dart';
 import 'endpoints.dart';
 import 'package:anipocket/constants.dart';

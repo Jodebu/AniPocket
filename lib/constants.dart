@@ -52,3 +52,4 @@ const String UI_PLAY_IN_YOUTUBE = 'Play in YouTube';
 const String UI_STANDARD_TITLE = 'Standard title:';
 const String UI_SYNOPSIS = 'Synopsis';
 const String UI_VIDEOS = 'Videos';
+const String UI_NO_EPISODES = 'This is a film/special/OVA\nIt only has one episode';
