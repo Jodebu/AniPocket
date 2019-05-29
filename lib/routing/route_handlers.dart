@@ -4,13 +4,13 @@ import 'package:anipocket/constants.dart';
 
 var animeDetailHandler = Handler(handlerFunc: (context, params) {
   String id = params[ID]?.first;
-  String title = params[TITLE]?.first;
+  String title = Uri.decodeQueryComponent(params[TITLE]?.first);
   return AnimeDetailPage(malId: id, title: title,);
 });
 
 var carouselHandler = Handler(handlerFunc: (context, params) {
   String id = params[ID]?.first;
-  String title = params[TITLE]?.first;
+  String title = Uri.decodeQueryComponent(params[TITLE]?.first);
   String index = params[INDEX]?.first;
   return CarouselPage(malId: id, title: title, index: index);
 });

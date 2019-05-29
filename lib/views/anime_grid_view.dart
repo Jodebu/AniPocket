@@ -59,8 +59,10 @@ class AnimeListItem extends StatelessWidget {
           backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.75),
         ),
       ),
-      onTap: () => AppRouter.router.navigateTo(context,
-          '/anime_detail/${animeListItem.malId}/${animeListItem.title}'),
+      onTap: () {
+        final encodedTitle = Uri.encodeComponent(animeListItem.title);
+        AppRouter.router.navigateTo(context, '/anime_detail/${animeListItem.malId}/$encodedTitle');
+      }
     );
   }
 }
