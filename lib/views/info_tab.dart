@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/dialogs/titleDialog.dart';
-import 'package:anipocket/views/icon_text_pair.dart';
+import 'package:anipocket/views/index.dart';
 
 class InfoTab extends StatelessWidget {
   InfoTab({Key key, this.animeInfo}) : super(key: key);
@@ -159,13 +159,10 @@ class CategoriesView extends StatelessWidget {
       crossAxisAlignment: CrossAxisAlignment.stretch,
       children: [
         Text(UI_GENRES, style: TextStyle(fontWeight: FontWeight.bold)),
-        Wrap(
-          alignment: WrapAlignment.center,
-          spacing: 8.0,
-          runSpacing: -8.0,
-          children:
-              genres.map((genre) => Chip(label: Text(genre[NAME]))).toList(),
-        ),
+        StackedChipView(
+          items: genres,
+          displayProperty: NAME,
+        )
       ],
     );
   }
