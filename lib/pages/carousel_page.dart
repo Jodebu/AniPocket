@@ -34,15 +34,24 @@ class _CarouselPageState extends State<CarouselPage> {
   void initState() {
     super.initState();
     _getAllAnimeMedia();
-    setState(() {
-      _index = int.parse(widget.index);
-    });
+    
+    setState(() { _index = int.parse(widget.index); });
     SystemChrome.setEnabledSystemUIOverlays([]);
   }
 
   void _getAllAnimeMedia() async {
-    final BuiltList<Picture> pictures = await jikan.getAnimePictures(int.parse(widget.malId));
-    final BuiltList<Promo> videos = await jikan.getAnimeVideos(int.parse(widget.malId));
+    BuiltList<Picture> pictures;
+    BuiltList<Promo> videos;
+
+    while (pictures == null) {
+      try { pictures = await jikan.getAnimePictures(int.parse(widget.malId)); }
+      on Exception { print('Exception!!'); }
+    }
+    while (videos == null) {
+      try { videos = await jikan.getAnimeVideos(int.parse(widget.malId)); }
+      on Exception { print('Exception!!'); }
+    }
+
     List media = List()..addAll(videos.toList())..addAll(pictures.toList());
     setState(() {
       _media = media;

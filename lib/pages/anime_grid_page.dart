@@ -35,10 +35,15 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
   }
 
   void _getTop() async {
-    setState(() {
-      _loading = true;
+    setState(() { _loading = true; 
     });
-    final BuiltList<Top> animeList = await jikan.getTop(TopType.anime);
+
+    BuiltList<Top> animeList;
+    while (animeList == null) {
+      try { animeList = await jikan.getTop(TopType.anime); }
+      on Exception { print('Exception!!'); }
+    }
+    
     setState(() {
       _animeList = animeList.toList(growable: true);
       _loading = false;
@@ -46,10 +51,14 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
   }
 
   void loadNextPage() async {
-    final animeListToAdd = await jikan.getTop(TopType.anime, page: ++_page);
-    setState(() {
-      _animeList.addAll(animeListToAdd);
-    });
+    BuiltList<Top> animeListToAdd;
+
+    while (animeListToAdd == null) {
+      try { animeListToAdd = await jikan.getTop(TopType.anime, page: ++_page); }
+      on Exception { print('Exception!!'); }
+    }
+
+    setState(() { _animeList.addAll(animeListToAdd); });
   }
 
   @override
