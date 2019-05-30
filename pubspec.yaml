@@ -25,7 +25,6 @@ dependencies:
   flutter_swiper: ^1.1.4
   jikan_dart: ^0.9.0
   built_value: ^6.5.0
-  webview_flutter: ^0.3.7+1
 
 dev_dependencies:
   flutter_test:

@@ -19,6 +19,8 @@ class AnimeDetailPage extends StatefulWidget {
 class _AnimeDetailPageState extends State<AnimeDetailPage> {
   final JikanApi jikan = JikanApi();
 
+  //TODO: Usar mis propias llamadas y controlar errores a bajo nivel
+
   int _malId;
   Map _anime;
   List<dynamic> _media;

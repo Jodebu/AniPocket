@@ -57,34 +57,36 @@ class MediaItem extends StatelessWidget {
   Widget build(BuildContext context) {
     var _isVideo = media[index] is Promo;
 
-    return InkResponse(
-      child: Stack(
-        fit: StackFit.expand,
-        children: [
-          CachedNetworkImage(
-            imageUrl: _isVideo ? media[index].imageUrl : media[index].small,
-            placeholder: Center(child: CircularProgressIndicator()),
-            errorWidget: Icon(Icons.error),
-            fit: BoxFit.cover,
-          ),
-          PositionedDirectional(
-            bottom: 4.0,
-            end: 4.0,
-            child: Icon(
-              Icons.play_circle_filled,
-              size: 50,
-              color: _isVideo
-                  ? Theme.of(context).primaryColorDark
-                  : Colors.transparent,
+    return Container(
+      child: InkWell(
+        child: Stack(
+          fit: StackFit.expand,
+          children: [
+            CachedNetworkImage(
+              imageUrl: _isVideo ? media[index].imageUrl : media[index].small,
+              placeholder: Center(child: CircularProgressIndicator()),
+              errorWidget: Icon(Icons.error),
+              fit: BoxFit.cover,
             ),
-          )
-        ],
-      ),
+            PositionedDirectional(
+              bottom: 4.0,
+              end: 4.0,
+              child: Icon(
+                Icons.play_circle_filled,
+                size: 50,
+                color: _isVideo
+                    ? Theme.of(context).primaryColorDark
+                    : Colors.transparent,
+              ),
+            )
+          ],
+        ),
       onTap: () {
         final encodedTitle = Uri.encodeComponent(title);
         AppRouter.router.navigateTo(context, '/carousel/$malId/$encodedTitle/$index');
         //TODO: Hero animations -> transitions
       },
+      ),
     );
   }
 }
