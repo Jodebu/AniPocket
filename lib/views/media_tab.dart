@@ -13,7 +13,7 @@ class MediaTab extends StatelessWidget {
       : super(key: key);
 
   static const int PORTRAIT_COLUMNS = 3;
-  static const int LANDSCAPE_COLUMNS = 4;
+  static const int LANDSCAPE_COLUMNS = 5;
   final int malId;
   final String title;
   final List media;

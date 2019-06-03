@@ -40,13 +40,10 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   }
 
   void _getAnimeInfo() async {
-    var anime;
-    while (anime == null) {
-      try { anime = await getAnime(_malId.toString()); }
-      on Exception { print('Exception!!'); }
-    }
-
-    setState(() { _anime = anime; });
+    var anime = await getAnime(_malId.toString());
+    setState(() {
+      _anime = anime;
+    });
   }
 
   void _getAllAnimeMedia() async {
@@ -67,12 +64,8 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
 
   void _getAllEpisodes() async {
     int page = 1;
-    Map ep;
+    Map ep = await getAnime(_malId.toString(), EPISODES, page);
 
-    while (ep == null) {
-      try { ep = await getAnime(_malId.toString(), EPISODES, page); }
-      on Exception { print('Exception!!'); }
-    }
     if (ep.containsKey(ERROR)) return;
     int lastPage = ep[EPISODES_LAST_PAGE];
     List episodes = ep[EPISODES];
@@ -84,11 +77,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   }
 
   dynamic _getAndAddEpisodePage(int page) async {
-    Map episodes;
-    while (episodes == null) {
-      try { episodes = await getAnime(_malId.toString(), EPISODES, page); }
-      on Exception { print('Exception!!'); }
-    }
+    Map episodes = await getAnime(_malId.toString(), EPISODES, page);
     return episodes[EPISODES];
   }
 

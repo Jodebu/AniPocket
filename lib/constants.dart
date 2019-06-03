@@ -38,6 +38,7 @@ const String VIDEOS = 'videos';
 
 //UI related
 const String UI_ADVANCED_SEARCH = 'Advanced search';
+const String UI_TOP_ANIME = 'Top anime';
 const String UI_CHARACTERS = 'Characters';
 const String UI_GENRES = 'Genres';
 const String UI_LOADING = 'Loading...';
@@ -47,14 +48,14 @@ const String UI_NEWS = 'News';
 const String UI_INFO = 'Info';
 const String UI_JAPANESE = 'Japanese:';
 const String UI_NO_DATE = 'No date found';
+const String UI_NO_EPISODES = 'This is a film/special/OVA\nIt only has one episode';
+const String UI_NO_NEWS = 'No news were found for this anime';
 const String UI_NO_TITLE = 'No title found';
 const String UI_PICTURES = 'Pictures';
 const String UI_PLAY_IN_YOUTUBE = 'Play in YouTube';
 const String UI_STANDARD_TITLE = 'Standard title:';
 const String UI_SYNOPSIS = 'Synopsis';
 const String UI_VIDEOS = 'Videos';
-const String UI_NO_EPISODES = 'This is a film/special/OVA\nIt only has one episode';
-const String UI_NO_NEWS = 'No news were found for this anime';
 
 //Genre related
 const List<Map> ANIME_GENRES = [

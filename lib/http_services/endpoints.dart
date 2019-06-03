@@ -6,5 +6,6 @@ class Endpoints {
 
   static const anime = '$_apiUrl/anime';
   static const top = '$_apiUrl/top';
+  static const genre = '$_apiUrl/genre';
 }
 
