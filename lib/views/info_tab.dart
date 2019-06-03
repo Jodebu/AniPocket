@@ -1,8 +1,9 @@
+import 'package:anipocket/config/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/dialogs/titleDialog.dart';
-import 'package:anipocket/views/icon_text_pair.dart';
+import 'package:anipocket/views/index.dart';
 
 class InfoTab extends StatelessWidget {
   InfoTab({Key key, this.animeInfo}) : super(key: key);
@@ -153,6 +154,10 @@ class CategoriesView extends StatelessWidget {
 
   final List genres;
 
+  void _showGenre(BuildContext context, int genreId) {
+    AppRouter.router.navigateTo(context, '/top/${genreId.toString()}');
+  }
+
   @override
   Widget build(BuildContext context) {
     return Column(
@@ -163,8 +168,12 @@ class CategoriesView extends StatelessWidget {
           alignment: WrapAlignment.center,
           spacing: 8.0,
           runSpacing: -8.0,
-          children:
-              genres.map((genre) => Chip(label: Text(genre[NAME]))).toList(),
+          children: genres
+              .map((genre) => ActionChip(
+                label: Text(genre[NAME]),
+                onPressed: () => _showGenre(context, genre[MAL_ID]),
+              ))
+              .toList(),
         ),
       ],
     );

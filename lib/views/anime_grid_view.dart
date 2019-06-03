@@ -1,12 +1,12 @@
+import 'package:anipocket/constants.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/config/app_router.dart';
-import 'package:jikan_dart/jikan_dart.dart';
 
 class AnimeGridView extends StatelessWidget {
   static const int PORTRAIT_COLUMNS = 3;
-  static const int LANDSCAPE_COLUMNS = 4;
-  final List<Top> animeList;
+  static const int LANDSCAPE_COLUMNS = 5;
+  final List<dynamic> animeList;
   final Function() loadNextPage;
 
   AnimeGridView({Key key, @required this.animeList, this.loadNextPage})
@@ -37,7 +37,7 @@ class AnimeGridView extends StatelessWidget {
 }
 
 class AnimeListItem extends StatelessWidget {
-  final Top animeListItem;
+  final dynamic animeListItem;
 
   AnimeListItem({Key key, @required this.animeListItem}) : super(key: key);
 
@@ -46,22 +46,22 @@ class AnimeListItem extends StatelessWidget {
     return InkResponse(
       child: GridTile(
         child: CachedNetworkImage(
-          imageUrl: animeListItem.imageUrl,
+          imageUrl: animeListItem[IMAGE_URL],
           placeholder: Center(child: CircularProgressIndicator()),
           errorWidget: Icon(Icons.error),
           fit: BoxFit.cover,
         ),
         footer: GridTileBar(
           title: Text(
-            animeListItem.title,
+            animeListItem[TITLE],
             maxLines: 2,
           ),
           backgroundColor: Theme.of(context).primaryColorDark.withOpacity(0.75),
         ),
       ),
       onTap: () {
-        final encodedTitle = Uri.encodeComponent(animeListItem.title);
-        AppRouter.router.navigateTo(context, '/anime_detail/${animeListItem.malId}/$encodedTitle');
+        final encodedTitle = Uri.encodeComponent(animeListItem[TITLE]);
+        AppRouter.router.navigateTo(context, '/anime_detail/${animeListItem[MAL_ID]}/$encodedTitle');
       }
     );
   }

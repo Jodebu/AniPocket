@@ -21,3 +21,10 @@ Future<List> getTop(String type, [int page = 1, String subtype = '']) async {
   final List data = payload[TOP];
   return data;
 }
+
+Future<List> getGenre(String type, int genreId, [int page = 1]) async {
+  final uri = '${Endpoints.genre}/$type/$genreId/$page';
+  final Map payload = await httpGet(uri);
+  final List data = payload[ANIME];
+  return data;
+}
