@@ -26,6 +26,7 @@ dependencies:
   jikan_dart: ^0.9.0
   built_value: ^6.5.0
   shared_preferences: ^0.4.0
+  intl: ^0.15.8
 
 dev_dependencies:
   flutter_test:

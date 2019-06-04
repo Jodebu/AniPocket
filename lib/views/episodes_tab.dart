@@ -1,5 +1,6 @@
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants.dart';
+import 'package:intl/intl.dart';
 
 class EpisodesTab extends StatelessWidget {
   EpisodesTab({Key key, @required this.title, @required this.episodes})
@@ -40,7 +41,7 @@ class EpisodesTab extends StatelessWidget {
                 title: Text(episodes[i][AIRED] == null
                     ? UI_NO_DATE
                     //TODO: Poner fecha inteligible
-                    : episodes[i][AIRED]),
+                    : DateFormat('dd-MM-yyyy').format(DateTime.parse(episodes[i][AIRED]))),
                 subtitle: _getIfFillerOrRecap(i),
                 dense: true,
               ),
