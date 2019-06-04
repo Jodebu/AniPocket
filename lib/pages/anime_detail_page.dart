@@ -1,3 +1,5 @@
+import 'dart:convert';
+
 import 'package:anipocket/views/news_tab.dart';
 import 'package:built_collection/built_collection.dart';
 import 'package:flutter/material.dart';
@@ -5,6 +7,7 @@ import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/constants.dart';
 import 'package:anipocket/views/index.dart';
 import 'package:jikan_dart/jikan_dart.dart';
+import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimeDetailPage extends StatefulWidget {
   AnimeDetailPage({Key key, this.malId, this.title}) : super(key: key);
@@ -19,10 +22,9 @@ class AnimeDetailPage extends StatefulWidget {
 class _AnimeDetailPageState extends State<AnimeDetailPage> {
   final JikanApi jikan = JikanApi();
 
-  //TODO: Usar mis propias llamadas y controlar errores a bajo nivel
-
   int _malId;
   Map _anime;
+  bool _favorite = false;
   List<dynamic> _media;
   List _episodes;
   List _news;
@@ -41,6 +43,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
 
   void _getAnimeInfo() async {
     var anime = await getAnime(_malId.toString());
+    _isFavorite();
     setState(() {
       _anime = anime;
     });
@@ -88,6 +91,40 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
       on Exception { print('Exception!!'); }
     }
     setState(() { _news = news.asList(); });
+  }
+
+  void _isFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    var anime = jsonEncode({
+      MAL_ID: _anime == null ? '' : _anime[MAL_ID],
+      TITLE: _anime == null ? '' : _anime[TITLE],
+      IMAGE_URL: _anime == null ? '' : _anime[IMAGE_URL]
+    });
+    bool favorite = (prefs.getStringList(SP_FAVORITES) ?? []).contains(anime);
+    setState(() {
+     _favorite = favorite; 
+    });
+  }
+
+  void _toggleFavorite() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> favourites = prefs.getStringList(SP_FAVORITES) ?? [];
+    var anime = jsonEncode({
+      MAL_ID: _anime == null ? '' : _anime[MAL_ID],
+      TITLE: _anime == null ? '' : _anime[TITLE],
+      IMAGE_URL: _anime == null ? '' : _anime[IMAGE_URL]
+    });
+
+    if (_favorite) {
+      favourites.remove(anime);
+      prefs.setStringList(SP_FAVORITES, favourites);
+    } else {
+      favourites.add(anime);
+      prefs.setStringList(SP_FAVORITES, favourites);
+    }
+    setState(() {
+      _favorite = !_favorite;
+    });
   }
 
   List<Widget> _getTabs() {
@@ -142,6 +179,14 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             isScrollable: true,
             tabs: _getTabs(),
           ),
+          actions: <Widget>[
+            IconButton(
+              icon: _favorite
+                ? Icon(Icons.favorite)
+                : Icon(Icons.favorite_border),
+              onPressed: () => _toggleFavorite(),
+            )
+          ],
         ),
         body: TabBarView(
           children: _getTabViews(),

@@ -44,6 +44,7 @@ const String UI_GENRES = 'Genres';
 const String UI_LOADING = 'Loading...';
 const String UI_ENGLISH = 'English:';
 const String UI_EPISODES = 'Episodes';
+const String UI_FAVORITES = 'Favorites';
 const String UI_NEWS = 'News';
 const String UI_INFO = 'Info';
 const String UI_JAPANESE = 'Japanese:';
@@ -57,9 +58,12 @@ const String UI_STANDARD_TITLE = 'Standard title:';
 const String UI_SYNOPSIS = 'Synopsis';
 const String UI_VIDEOS = 'Videos';
 
+//SharedPreferences related
+const String SP_FAVORITES = 'favorites';
+
 //Genre related
 const List<Map> ANIME_GENRES = [
-  {MAL_ID: 1, NAME: 'Adventure'},
+  {MAL_ID: 1, NAME: 'Action'},
   {MAL_ID: 2, NAME: 'Adventure'},
   {MAL_ID: 3, NAME: 'Cars'},
   {MAL_ID: 4, NAME: 'Comedy'},

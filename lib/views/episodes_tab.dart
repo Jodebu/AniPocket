@@ -39,6 +39,7 @@ class EpisodesTab extends StatelessWidget {
                 leading: Icon(Icons.date_range),
                 title: Text(episodes[i][AIRED] == null
                     ? UI_NO_DATE
+                    //TODO: Poner fecha inteligible
                     : episodes[i][AIRED]),
                 subtitle: _getIfFillerOrRecap(i),
                 dense: true,
