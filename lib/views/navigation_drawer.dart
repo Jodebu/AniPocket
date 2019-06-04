@@ -5,8 +5,9 @@ import '../constants.dart';
 class NavigationDrawer extends StatelessWidget {
   final Function(int) onSelectGenre;
   final Function() onSelectTop;
+  final Function() onSelectFavorites;
 
-  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop})
+  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop, this.onSelectFavorites})
       : super(key: key);
 
   List<Map> _getSortedGenres(){
@@ -47,6 +48,15 @@ class NavigationDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               onSelectTop();
+              
+            }
+          ),
+          ListTile(
+            leading: Icon(Icons.favorite),
+            title: Text(UI_FAVORITES),
+            onTap: () {
+              Navigator.pop(context);
+              onSelectFavorites();
             }
           ),
           ExpansionTile(
