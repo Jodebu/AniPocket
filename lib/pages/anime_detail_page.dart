@@ -24,7 +24,8 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
 
   int _malId;
   Map _anime;
-  bool _favorite = false;
+  bool _favorite;
+  bool _isFavDisabled;
   List<dynamic> _media;
   List _episodes;
   List _news;
@@ -39,6 +40,8 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     _getAllAnimeMedia();
     _getAllEpisodes();
     _getAllNews();
+    _favorite = false;
+    _isFavDisabled = true;
   }
 
   void _getAnimeInfo() async {
@@ -103,6 +106,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     bool favorite = (prefs.getStringList(SP_FAVORITES) ?? []).contains(anime);
     setState(() {
      _favorite = favorite; 
+     _isFavDisabled = false;
     });
   }
 
@@ -184,7 +188,9 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
               icon: _favorite
                 ? Icon(Icons.favorite)
                 : Icon(Icons.favorite_border),
-              onPressed: () => _toggleFavorite(),
+              onPressed: _isFavDisabled
+                ? null
+                : () => _toggleFavorite(),
             )
           ],
         ),
