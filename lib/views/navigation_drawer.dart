@@ -6,8 +6,9 @@ class NavigationDrawer extends StatelessWidget {
   final Function(int) onSelectGenre;
   final Function() onSelectTop;
   final Function() onSelectFavorites;
+  final Function() onSelectSearch;
 
-  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop, this.onSelectFavorites})
+  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop, this.onSelectFavorites, this.onSelectSearch})
       : super(key: key);
 
   List<Map> _getSortedGenres(){
@@ -40,7 +41,10 @@ class NavigationDrawer extends StatelessWidget {
           ListTile(
             leading: Icon(Icons.search),
             title: Text(UI_ADVANCED_SEARCH),
-            onTap: () {},
+            onTap: () {
+              Navigator.pop(context);
+              onSelectSearch();
+            },
           ),
           ListTile(
             leading: Icon(Icons.whatshot),
@@ -48,7 +52,6 @@ class NavigationDrawer extends StatelessWidget {
             onTap: () {
               Navigator.pop(context);
               onSelectTop();
-              
             }
           ),
           ListTile(

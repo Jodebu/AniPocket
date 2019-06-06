@@ -35,6 +35,7 @@ class EpisodesTab extends StatelessWidget {
             : Icon(Icons.visibility_off),
           onPressed: () => toggleWatched(episodes[i][EPISODE_ID]),
         ),
+        // TODO: Add episode number somewhere
         title: Text(episodes[i][TITLE]),
         children: <Widget>[
           ListTile(

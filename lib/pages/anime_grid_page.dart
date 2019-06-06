@@ -9,16 +9,17 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimeGridPage extends StatefulWidget {
-  AnimeGridPage({Key key, this.animeList, this.genre}) : super(key: key);
+  AnimeGridPage({Key key, this.animeList, this.genre, this.searchMode = false}) : super(key: key);
 
   final List<dynamic> animeList;
   final String genre;
+  final bool searchMode;
 
   @override
   _AnimeGridPageState createState() {
     return animeList != null
-        ? _AnimeGridPageState(animeList, genre)
-        : _AnimeGridPageState([], genre);
+        ? _AnimeGridPageState(animeList, genre, searchMode)
+        : _AnimeGridPageState([], genre, searchMode);
   }
 }
 
@@ -30,10 +31,12 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
   int _gridType;
   int _page = 1;
   bool _loading = true;
+  bool _searchMode;
 
-  _AnimeGridPageState(List<dynamic> animeList, String genre) {
+  _AnimeGridPageState(List<dynamic> animeList, String genre, bool searchMode) {
     _animeList = animeList;
     _gridType = int.parse(genre);
+    _searchMode = searchMode;
   }
 
   void initState() {
@@ -43,6 +46,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void _getTop([int genreId = 0]) async {
     setState(() {
+      _searchMode = false;
       _loading = true;
     });
 
@@ -69,6 +73,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void _getFavorites() async {
     setState(() {
+      _searchMode = false;
       _loading = true;
       _page = 1;
       _gridType = -1;
@@ -87,6 +92,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void getByGenre(int genreId) async {
     setState(() {
+      _searchMode = false;
       _loading = true;
       _page = 1;
       _gridType = genreId;
@@ -106,25 +112,57 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
     return 'Top ${ANIME_GENRES.where((genre) => genre[MAL_ID] == genreId).first[NAME]}';
   }
 
+  void _search() {
+    setState(() {
+      _searchMode = true;
+      _gridType = -1;
+      _loading = false;
+      _animeList = [];
+      _title = UI_SEARCH;
+    });
+  }
+
+  void searchAnime(String terms) async {
+    if (terms.length < 3) return;
+
+    setState(() {
+      _loading = true;
+    });
+
+    List animeList = await search(ANIME, terms);
+
+    setState(() {
+      _loading = false;
+      _animeList = animeList; 
+    });
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('$APP_TITLE - $_title'),
       ),
-      body: Center(
-        child: _loading
-            ? CircularProgressIndicator()
-            : AnimeGridView(
-                animeList: _animeList,
-                loadNextPage: loadNextPage,
-                singlePage: _gridType == -1,
-              ),
+      body: Column(
+        children: [
+          if (_searchMode) SearchView(onTextWritten: searchAnime,),
+          Expanded(
+            child: _loading
+              ? Center(child: CircularProgressIndicator())
+              : AnimeGridView(
+                  animeList: _animeList,
+                  loadNextPage: loadNextPage,
+                  singlePage: _gridType == -1,
+            ),
+          ),
+        ],
       ),
       drawer: NavigationDrawer(
         onSelectGenre: getByGenre,
         onSelectTop: _getTop,
-        onSelectFavorites: _getFavorites,)
+        onSelectFavorites: _getFavorites,
+        onSelectSearch: _search,
+      )
     );
   }
 }
