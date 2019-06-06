@@ -8,8 +8,9 @@ class AnimeGridView extends StatelessWidget {
   static const int LANDSCAPE_COLUMNS = 5;
   final List<dynamic> animeList;
   final Function() loadNextPage;
+  final bool singlePage;
 
-  AnimeGridView({Key key, @required this.animeList, this.loadNextPage})
+  AnimeGridView({Key key, @required this.animeList, @required this.loadNextPage, @required this.singlePage})
       : super(key: key);
 
   @override
@@ -26,7 +27,7 @@ class AnimeGridView extends StatelessWidget {
         ),
         itemCount: animeList.length,
         itemBuilder: (context, i) {
-          if (i >= animeList.length -1) {
+          if (i >= animeList.length -1 && !singlePage) {
             loadNextPage();
           }
           return AnimeListItem(animeListItem: animeList[i]);

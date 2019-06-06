@@ -118,6 +118,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
             : AnimeGridView(
                 animeList: _animeList,
                 loadNextPage: loadNextPage,
+                singlePage: _gridType == -1,
               ),
       ),
       drawer: NavigationDrawer(

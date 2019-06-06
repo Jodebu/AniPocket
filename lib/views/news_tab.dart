@@ -5,10 +5,9 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
 
 class NewsTab extends StatelessWidget {
-  NewsTab({Key key, @required this.title, @required this.news})
+  NewsTab({Key key, @required this.news})
       : super(key: key);
 
-  final String title;
   final List<Article> news;
 
   void _openLink(String url) async {
