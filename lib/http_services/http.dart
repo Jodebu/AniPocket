@@ -12,7 +12,7 @@ httpGet(String url) async {
       }
       return json.decode(payload);
     } on Exception {
-      print('Server unresponsive. Retrying...');
+      print('Server unresponsive: $url. Retrying...');
       payload = '';
     }
   }

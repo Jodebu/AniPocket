@@ -28,6 +28,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   bool _isFavDisabled;
   List<dynamic> _media;
   List _episodes;
+  List _watched;
   List _news;
 
   _AnimeDetailPageState(String malId) {
@@ -39,6 +40,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     _getAnimeInfo();
     _getAllAnimeMedia();
     _getAllEpisodes();
+    _getWatchedEpisodes();
     _getAllNews();
     _favorite = false;
     _isFavDisabled = true;
@@ -85,6 +87,32 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
   dynamic _getAndAddEpisodePage(int page) async {
     Map episodes = await getAnime(_malId.toString(), EPISODES, page);
     return episodes[EPISODES];
+  }
+
+  void _getWatchedEpisodes() async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    List<String> watched = prefs.getStringList(_malId.toString()) ?? [];
+    setState(() {
+     _watched = watched; 
+     // _isFavDisabled = false;
+    });
+  }
+
+  void _toggleWatched(int episodeId) async {
+    SharedPreferences prefs = await SharedPreferences.getInstance();
+    String episode = episodeId.toString();
+    List<String> watched = prefs.getStringList(_malId.toString()) ?? [];
+
+    if (watched.contains(episode)) {
+      watched.remove(episode);
+      prefs.setStringList(_malId.toString(), watched);
+    } else {
+      watched.add(episode);
+      prefs.setStringList(_malId.toString(), watched);
+    }
+    setState(() {
+      _watched = watched;
+    });
   }
 
   void _getAllNews() async {
@@ -141,6 +169,12 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     ));
     tabs.add(Tab(
       child: IconTextPair(
+        icon: Icon(Icons.tv),
+        text: Text(UI_EPISODES),
+      ),
+    ));
+    tabs.add(Tab(
+      child: IconTextPair(
         icon: Icon(Icons.photo),
         text: Text(UI_PICTURES),
       ),
@@ -151,21 +185,15 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
         text: Text(UI_NEWS),
       ),
     ));
-    tabs.add(Tab(
-      child: IconTextPair(
-        icon: Icon(Icons.tv),
-        text: Text(UI_EPISODES),
-      ),
-    ));
     return tabs;
   }
 
   List<Widget> _getTabViews() {
     List<Widget> tabViews = List();
     tabViews.add(InfoTab(animeInfo: _anime));
+    tabViews.add(EpisodesTab(malId: _malId, episodes: _episodes, watched: _watched, toggleWatched: _toggleWatched,));
     tabViews.add(MediaTab(malId: _malId, title: widget.title, media: _media));
-    tabViews.add(NewsTab(title: widget.title, news: _news));
-    tabViews.add(EpisodesTab(title: widget.title, episodes: _episodes));
+    tabViews.add(NewsTab(news: _news));
     return tabViews;
   }
 
