@@ -17,6 +17,7 @@ class NavigationDrawer extends StatelessWidget {
     return genres;
   }
 
+// TODO: General news section
   @override
   Widget build(BuildContext context) {
     List<Map> genres = _getSortedGenres();
@@ -71,7 +72,10 @@ class NavigationDrawer extends StatelessWidget {
                 padding: EdgeInsets.only(left: 32.0),
                 child: ListTile(
                   title: Text(genres[i][NAME]),
-                  onTap: () => onSelectGenre(genres[i][MAL_ID]),
+                  onTap: () {
+                    Navigator.pop(context);
+                    onSelectGenre(genres[i][MAL_ID]);
+                  }
                 ),
               ),
             )

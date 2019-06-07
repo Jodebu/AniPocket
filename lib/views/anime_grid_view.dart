@@ -1,4 +1,5 @@
 import 'package:anipocket/constants.dart';
+import 'package:anipocket/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:anipocket/config/app_router.dart';
@@ -8,15 +9,16 @@ class AnimeGridView extends StatelessWidget {
   static const int LANDSCAPE_COLUMNS = 5;
   final List<dynamic> animeList;
   final Function() loadNextPage;
-  final bool singlePage;
+  final ViewType viewType;
 
-  AnimeGridView({Key key, @required this.animeList, @required this.loadNextPage, @required this.singlePage})
+  AnimeGridView({Key key, @required this.animeList, @required this.loadNextPage, @required this.viewType})
       : super(key: key);
 
   @override
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
       return GridView.builder(
+        padding: EdgeInsets.only(top: viewType == ViewType.search ? 68.0 : 0),
         //TODO: only portrait plz
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: orientation == Orientation.portrait
@@ -28,7 +30,7 @@ class AnimeGridView extends StatelessWidget {
         ),
         itemCount: animeList.length,
         itemBuilder: (context, i) {
-          if (i >= animeList.length -1 && !singlePage) {
+          if (i == animeList.length - 10 && viewType != ViewType.favorite) {
             loadNextPage();
           }
           return AnimeListItem(animeListItem: animeList[i]);

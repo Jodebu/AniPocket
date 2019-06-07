@@ -36,6 +36,7 @@ const String TYPE = 'type';
 const String TOP = 'top';
 const String VIDEO_URL = 'video_url';
 const String VIDEOS = 'videos';
+const String VIEW_TYPE = 'view_type';
 
 //UI related
 const String UI_ADVANCED_SEARCH = 'Advanced search';
@@ -53,7 +54,7 @@ const String UI_NO_DATE = 'No date found';
 const String UI_NO_EPISODES = 'This is a film/special/OVA\nIt only has one episode';
 const String UI_NO_NEWS = 'No news were found for this anime';
 const String UI_NO_TITLE = 'No title found';
-const String UI_PICTURES = 'Pictures';
+const String UI_MEDIA = 'Media';
 const String UI_PLAY_IN_YOUTUBE = 'Play in YouTube';
 const String UI_SEARCH = 'Search';
 const String UI_SEARCH_HINT = 'Search here...';

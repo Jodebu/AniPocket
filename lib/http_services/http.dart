@@ -3,6 +3,7 @@ import 'dart:convert';
 
 httpGet(String url) async {
   String payload = '';
+  print('requesting: ' + url);
   while (payload == '') {
     try {
       HttpClientRequest request = await HttpClient().getUrl(Uri.parse(url));
