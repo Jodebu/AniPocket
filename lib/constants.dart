@@ -70,6 +70,7 @@ const String UI_VIDEOS = 'Videos';
 
 //SharedPreferences related
 const String SP_FAVORITES = 'favorites';
+const String SP_NOTIFIED_TODAY = 'notified_today';
 
 //Genre related
 const List<Map> ANIME_GENRES = [

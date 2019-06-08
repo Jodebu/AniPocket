@@ -27,6 +27,8 @@ dependencies:
   built_value: ^6.5.0
   shared_preferences: ^0.4.0
   intl: ^0.15.8
+  flutter_local_notifications: ^0.7.1+1
+  background_fetch: ^0.2.0
 
 dev_dependencies:
   flutter_test:
