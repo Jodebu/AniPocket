@@ -8,5 +8,6 @@ class Endpoints {
   static const genre = '$_apiUrl/genre';
   static const search = '$_apiUrl/search';
   static const top = '$_apiUrl/top';
+  static const schedule = '$_apiUrl/schedule';
 }
 

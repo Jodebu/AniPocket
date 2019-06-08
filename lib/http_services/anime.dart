@@ -35,3 +35,10 @@ Future<List> getGenre(String type, int genreId, [int page = 1]) async {
   final List data = payload[ANIME];
   return data;
 }
+
+Future<List> getSchedule(String day) async {
+  final uri = '${Endpoints.schedule}/$day';
+  final Map payload = await httpGet(uri);
+  final List data = payload[day];
+  return data;
+}

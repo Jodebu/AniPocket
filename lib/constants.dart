@@ -42,6 +42,7 @@ const String VIEW_TYPE = 'view_type';
 
 //UI related
 const String UI_ADVANCED_SEARCH = 'Advanced search';
+const String UI_AIRING = 'Airing';
 const String UI_TOP_ANIME = 'Top anime';
 const String UI_CHARACTERS = 'Characters';
 const String UI_GENRES = 'Genres';
@@ -115,6 +116,17 @@ const List<Map> ANIME_GENRES = [
   {MAL_ID: 41, NAME: 'Thriller'},
   {MAL_ID: 42, NAME: 'Seinen'},
   {MAL_ID: 43, NAME: 'Josei'}
+];
+
+//Schedule related
+const List<Map> WEEKDAYS = [
+  {MAL_ID: 'monday', NAME: 'Monday'},
+  {MAL_ID: 'tuesday', NAME: 'Tuesday'},
+  {MAL_ID: 'wednesday', NAME: 'Wednesday'},
+  {MAL_ID: 'thursday', NAME: 'Thursday'},
+  {MAL_ID: 'friday', NAME: 'Friday'},
+  {MAL_ID: 'saturday', NAME: 'Saturday'},
+  {MAL_ID: 'sunday', NAME: 'Sunday'}
 ];
 
 List<Map> getSortedGenres() {
