@@ -5,7 +5,8 @@ class Endpoints {
   static const _apiUrl = '$_apiRoot/$_apiVersion';
 
   static const anime = '$_apiUrl/anime';
-  static const top = '$_apiUrl/top';
   static const genre = '$_apiUrl/genre';
+  static const search = '$_apiUrl/search';
+  static const top = '$_apiUrl/top';
 }
 

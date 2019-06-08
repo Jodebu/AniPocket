@@ -29,11 +29,17 @@ class EpisodesTab extends StatelessWidget {
       separatorBuilder: (context, i) => Divider(),
       itemCount: episodes == null ? 0 : episodes.length,
       itemBuilder: (context, i) => ExpansionTile(
-        leading: IconButton(
-          icon: watched.contains(episodes[i][EPISODE_ID].toString())
-            ? Icon(Icons.visibility, color: Theme.of(context).primaryColor,)
-            : Icon(Icons.visibility_off),
-          onPressed: () => toggleWatched(episodes[i][EPISODE_ID]),
+        leading: Row(
+          mainAxisSize: MainAxisSize.min,
+          children: [
+            IconButton(
+              icon: watched.contains(episodes[i][EPISODE_ID].toString())
+                ? Icon(Icons.visibility, color: Theme.of(context).primaryColor,)
+                : Icon(Icons.visibility_off),
+              onPressed: () => toggleWatched(episodes[i][EPISODE_ID]),
+            ),
+            Text(episodes[i][EPISODE_ID].toString()),
+          ]
         ),
         title: Text(episodes[i][TITLE]),
         children: <Widget>[

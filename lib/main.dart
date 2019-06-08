@@ -21,7 +21,7 @@ class AniPocket extends StatelessWidget {
       theme: ThemeData(
         primarySwatch: Colors.blueGrey,
       ),
-      home: AnimeGridPage(genre: '0',),
+      home: AnimeGridPage(),
       onGenerateRoute: AppRouter.router.generator,
     );
   }

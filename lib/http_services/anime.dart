@@ -3,6 +3,13 @@ import 'http.dart';
 import 'endpoints.dart';
 import 'package:anipocket/constants.dart';
 
+Future<List> search(String type, String terms, {int page = 1, String queryString = ''}) async {
+  final uri = '${Endpoints.search}/$type?q=$terms&page=$page&$queryString';
+  final Map payload = await httpGet(uri);
+  final List data = payload[RESULTS];
+  return data;
+}
+
 Future getAnime(String malId, [String request = '', int param]) async {
   var uri = '${Endpoints.anime}/$malId';
   if (request != '') {

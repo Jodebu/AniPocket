@@ -3,8 +3,9 @@ import 'package:anipocket/pages/index.dart';
 import 'package:anipocket/constants.dart';
 
 var topHandler = Handler(handlerFunc: (context, params) {
+  String viewType = params[VIEW_TYPE]?.first ?? 'top';
   String genre = params[GENRES]?.first ?? '0';
-  return AnimeGridPage(genre: genre,);
+  return AnimeGridPage(viewType: viewType, genre: genre,);
 });
 
 var animeDetailHandler = Handler(handlerFunc: (context, params) {

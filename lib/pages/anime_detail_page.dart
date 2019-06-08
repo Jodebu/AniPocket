@@ -176,7 +176,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
     tabs.add(Tab(
       child: IconTextPair(
         icon: Icon(Icons.photo),
-        text: Text(UI_PICTURES),
+        text: Text(UI_MEDIA),
       ),
     ));
     tabs.add(Tab(
@@ -211,7 +211,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             isScrollable: true,
             tabs: _getTabs(),
           ),
-          actions: <Widget>[
+          actions: [
             IconButton(
               icon: _favorite
                 ? Icon(Icons.favorite)

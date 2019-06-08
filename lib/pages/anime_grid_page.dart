@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:anipocket/dialogs/filter_dialog.dart';
 import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/views/navigation_drawer.dart';
 import 'package:flutter/material.dart';
@@ -9,58 +10,82 @@ import 'package:jikan_dart/jikan_dart.dart';
 import 'package:shared_preferences/shared_preferences.dart';
 
 class AnimeGridPage extends StatefulWidget {
-  AnimeGridPage({Key key, this.animeList, this.genre}) : super(key: key);
+  AnimeGridPage({Key key, this.viewType , this.genre}) : super(key: key);
 
-  final List<dynamic> animeList;
+  final String viewType;
   final String genre;
 
   @override
   _AnimeGridPageState createState() {
-    return animeList != null
-        ? _AnimeGridPageState(animeList, genre)
-        : _AnimeGridPageState([], genre);
+    return _AnimeGridPageState(viewType, genre);
   }
 }
 
 class _AnimeGridPageState extends State<AnimeGridPage> {
   final JikanApi jikan = JikanApi();
   
-  List<dynamic> _animeList;
+  List<dynamic> _animeList = [];
   String _title = 'Top';
-  int _gridType;
   int _page = 1;
+  ViewType _viewType = ViewType.top;
+  int _genre = 0;
   bool _loading = true;
+  String _terms = '';
+  Map<String, String> _filters = {};
 
-  _AnimeGridPageState(List<dynamic> animeList, String genre) {
-    _animeList = animeList;
-    _gridType = int.parse(genre);
+  _AnimeGridPageState([String viewType, String genre]) {
+    switch (viewType) {
+      case 'top': _viewType = ViewType.top; break;
+      case 'search': _viewType = ViewType.search; break;
+      case 'favorite': _viewType = ViewType.favorite; break;
+      case 'genre': _viewType = ViewType.genre; break;
+      default: _viewType = ViewType.top; break;
+    }
+    _genre = genre == null ? 0 : int.parse(genre);
   }
 
   void initState() {
     super.initState();
-    _getTop(_gridType);
+    if (!_animeList.isEmpty) return;
+    switch (_viewType) {
+      case ViewType.top: _getTop(); break;
+      case ViewType.genre: getByGenre(_genre); break;
+      case ViewType.favorite: _getFavorites(); break;
+      case ViewType.search: _search(); break;
+    }
   }
 
-  void _getTop([int genreId = 0]) async {
+  void _getTop() async {
     setState(() {
+      _title = 'Top';
+      _viewType = ViewType.top;
       _loading = true;
     });
 
-    List<dynamic> animeList = genreId == 0
-      ? await getTop(ANIME)
-      : await getGenre(ANIME, _gridType);
+    List<dynamic> animeList = await getTop(ANIME);
     
     setState(() {
       _animeList = animeList;
       _loading = false;
-      if (_gridType > 0) _title = _getGenreTitle(_gridType);
     });
   }
 
   void loadNextPage() async {
-    List<dynamic> animeListToAdd = _gridType == 0
-      ? await getTop(ANIME, ++_page)
-      : await getGenre(ANIME, _gridType, ++_page);
+    List<dynamic> animeListToAdd;
+
+    switch (_viewType) {
+      case ViewType.top: 
+        animeListToAdd = await getTop(ANIME, ++_page);
+        break;
+      case ViewType.genre:
+        animeListToAdd = await getGenre(ANIME, _genre, ++_page);
+        break;
+      case ViewType.search:
+        animeListToAdd = await search(ANIME, _terms, page: ++_page);
+        break;
+      default:
+        break;
+    }
 
     setState(() {
       _animeList.addAll(animeListToAdd ?? []);
@@ -69,9 +94,9 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void _getFavorites() async {
     setState(() {
+      _viewType = ViewType.favorite;
       _loading = true;
       _page = 1;
-      _gridType = -1;
       _title = UI_FAVORITES;
     });
 
@@ -87,13 +112,13 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void getByGenre(int genreId) async {
     setState(() {
+      _viewType = ViewType.genre;
       _loading = true;
+      _genre = genreId;
       _page = 1;
-      _gridType = genreId;
       _title = _getGenreTitle(genreId);
     });
 
-    Navigator.pop(context);
     List animeList = await getGenre(ANIME, genreId);
 
     setState(() {
@@ -106,25 +131,106 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
     return 'Top ${ANIME_GENRES.where((genre) => genre[MAL_ID] == genreId).first[NAME]}';
   }
 
+  void _search() {
+    setState(() {
+      _viewType = ViewType.search;
+      _loading = false;
+      _page = 1;
+      _animeList = [];
+      _terms = '';
+      _title = UI_SEARCH;
+    });
+  }
+
+  void searchAnime(String terms) async {
+    if (terms.length < 3 || _terms == terms) return;
+
+    setState(() {
+      _terms = terms;
+      _loading = true;
+      _page = 1;
+    });
+
+    List animeList = await search(ANIME, terms);
+
+    setState(() {
+      _loading = false;
+      _animeList = animeList; 
+    });
+  }
+
+  void _onFilterIconPressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => FilterDialog(
+        filters: _filters,
+        applyFilters: aplyFilters,
+      )
+    );
+  }
+
+  void aplyFilters() async {
+    if (_terms.length < 3) return;
+
+    setState(() {
+      _loading = true;
+      _page = 1;
+    });
+
+    List<String> queryParams = [];
+    _filters.forEach((name, value) => queryParams.add('$name=$value'));
+    String queryString = queryParams.join('&');
+
+    List animeList = await search(ANIME, _terms, queryString: queryString);
+
+    setState(() {
+      _animeList = animeList; 
+      _loading = false;
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('$APP_TITLE - $_title'),
+        actions: [
+          if (_viewType == ViewType.search) IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () => _onFilterIconPressed(context),
+          ),
+        ],
       ),
-      body: Center(
-        child: _loading
-            ? CircularProgressIndicator()
+      body: Stack(
+        fit: StackFit.expand,
+        children: [
+          _loading
+            ? Center(child: CircularProgressIndicator())
             : AnimeGridView(
                 animeList: _animeList,
                 loadNextPage: loadNextPage,
-                singlePage: _gridType == -1,
-              ),
+                viewType: _viewType,
+          ),
+          if (_viewType == ViewType.search) Align(
+            alignment: Alignment.topCenter,
+            child: SearchView(onTextWritten: searchAnime,),
+          ),
+        ],
       ),
       drawer: NavigationDrawer(
         onSelectGenre: getByGenre,
         onSelectTop: _getTop,
-        onSelectFavorites: _getFavorites,)
+        onSelectFavorites: _getFavorites,
+        onSelectSearch: _search,
+      ),
     );
   }
+}
+
+enum ViewType {
+  search,
+  top,
+  favorite,
+  genre,
 }
