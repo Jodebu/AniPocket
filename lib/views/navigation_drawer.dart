@@ -7,8 +7,9 @@ class NavigationDrawer extends StatelessWidget {
   final Function() onSelectTop;
   final Function() onSelectFavorites;
   final Function() onSelectSearch;
+  final Function(String) onSelectAiring;
 
-  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop, this.onSelectFavorites, this.onSelectSearch})
+  NavigationDrawer({Key key, this.onSelectGenre, this.onSelectTop, this.onSelectFavorites, this.onSelectSearch, this.onSelectAiring})
       : super(key: key);
 
   List<Map> _getSortedGenres(){
@@ -62,6 +63,23 @@ class NavigationDrawer extends StatelessWidget {
               Navigator.pop(context);
               onSelectFavorites();
             }
+          ),
+          ExpansionTile(
+            leading: Icon(Icons.settings_input_antenna),
+            title: Text(UI_AIRING),
+            children: List<Container>.generate(
+              WEEKDAYS.length,
+              (int i) => Container(
+                padding: EdgeInsets.only(left: 32.0),
+                child: ListTile(
+                  title: Text(WEEKDAYS[i][NAME]),
+                  onTap: () {
+                    Navigator.pop(context);
+                    onSelectAiring(WEEKDAYS[i][MAL_ID]);
+                  }
+                ),
+              ),
+            )
           ),
           ExpansionTile(
             leading: Icon(Icons.category),

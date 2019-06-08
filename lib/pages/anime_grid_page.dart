@@ -46,12 +46,13 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void initState() {
     super.initState();
-    if (!_animeList.isEmpty) return;
+    if (_animeList.isNotEmpty) return;
     switch (_viewType) {
       case ViewType.top: _getTop(); break;
       case ViewType.genre: getByGenre(_genre); break;
       case ViewType.favorite: _getFavorites(); break;
       case ViewType.search: _search(); break;
+      default: break;
     }
   }
 
@@ -187,7 +188,28 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
       _animeList = animeList; 
       _loading = false;
     });
+  }
 
+  void _getSchedule(String weekday) async {
+    setState(() {
+      _viewType = ViewType.airing;
+      _loading = true;
+      _page = 1;
+      _animeList = [];
+      _terms = '';
+      _title = _getAiringTitle(weekday);
+    });
+
+    List animeList = await getSchedule(weekday);
+
+    setState(() {
+      _loading = false;
+      _animeList = animeList; 
+    });
+  }
+
+  String _getAiringTitle(String weekday) {
+    return '$UI_AIRING ${WEEKDAYS.where((day) => day[MAL_ID] == weekday).first[NAME]}';
   }
 
   @override
@@ -223,6 +245,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
         onSelectTop: _getTop,
         onSelectFavorites: _getFavorites,
         onSelectSearch: _search,
+        onSelectAiring: _getSchedule,
       ),
     );
   }
@@ -233,4 +256,5 @@ enum ViewType {
   top,
   favorite,
   genre,
+  airing,
 }

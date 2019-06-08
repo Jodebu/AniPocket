@@ -30,7 +30,7 @@ class AnimeGridView extends StatelessWidget {
         ),
         itemCount: animeList.length,
         itemBuilder: (context, i) {
-          if (i == animeList.length - 10 && viewType != ViewType.favorite) {
+          if (i == animeList.length - 10 && viewType != ViewType.favorite && viewType != ViewType.airing) {
             loadNextPage();
           }
           return AnimeListItem(animeListItem: animeList[i]);
