@@ -211,7 +211,7 @@ class _AnimeDetailPageState extends State<AnimeDetailPage> {
             isScrollable: true,
             tabs: _getTabs(),
           ),
-          actions: <Widget>[
+          actions: [
             IconButton(
               icon: _favorite
                 ? Icon(Icons.favorite)

@@ -1,5 +1,6 @@
 import 'dart:convert';
 
+import 'package:anipocket/dialogs/filter_dialog.dart';
 import 'package:anipocket/http_services/anime.dart';
 import 'package:anipocket/views/navigation_drawer.dart';
 import 'package:flutter/material.dart';
@@ -30,6 +31,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
   int _genre = 0;
   bool _loading = true;
   String _terms = '';
+  Map<String, String> _filters = {};
 
   _AnimeGridPageState([String viewType, String genre]) {
     switch (viewType) {
@@ -44,6 +46,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
 
   void initState() {
     super.initState();
+    if (!_animeList.isEmpty) return;
     switch (_viewType) {
       case ViewType.top: _getTop(); break;
       case ViewType.genre: getByGenre(_genre); break;
@@ -53,7 +56,6 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
   }
 
   void _getTop() async {
-    // TODO: poner bien el título al entrar en el top
     setState(() {
       _title = 'Top';
       _viewType = ViewType.top;
@@ -135,12 +137,13 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
       _loading = false;
       _page = 1;
       _animeList = [];
+      _terms = '';
       _title = UI_SEARCH;
     });
   }
 
   void searchAnime(String terms) async {
-    if (terms.length < 3) return;
+    if (terms.length < 3 || _terms == terms) return;
 
     setState(() {
       _terms = terms;
@@ -156,11 +159,48 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
     });
   }
 
+  void _onFilterIconPressed(BuildContext context) {
+    showDialog(
+      context: context,
+      builder: (context) => FilterDialog(
+        filters: _filters,
+        applyFilters: aplyFilters,
+      )
+    );
+  }
+
+  void aplyFilters() async {
+    if (_terms.length < 3) return;
+
+    setState(() {
+      _loading = true;
+      _page = 1;
+    });
+
+    List<String> queryParams = [];
+    _filters.forEach((name, value) => queryParams.add('$name=$value'));
+    String queryString = queryParams.join('&');
+
+    List animeList = await search(ANIME, _terms, queryString: queryString);
+
+    setState(() {
+      _animeList = animeList; 
+      _loading = false;
+    });
+
+  }
+
   @override
   Widget build(BuildContext context) {
     return Scaffold(
       appBar: AppBar(
         title: Text('$APP_TITLE - $_title'),
+        actions: [
+          if (_viewType == ViewType.search) IconButton(
+            icon: Icon(Icons.filter_list),
+            onPressed: () => _onFilterIconPressed(context),
+          ),
+        ],
       ),
       body: Stack(
         fit: StackFit.expand,
@@ -183,7 +223,7 @@ class _AnimeGridPageState extends State<AnimeGridPage> {
         onSelectTop: _getTop,
         onSelectFavorites: _getFavorites,
         onSelectSearch: _search,
-      )
+      ),
     );
   }
 }

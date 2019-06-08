@@ -1,4 +1,5 @@
 import 'package:anipocket/config/app_router.dart';
+import 'package:anipocket/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';
@@ -155,7 +156,7 @@ class CategoriesView extends StatelessWidget {
   final List genres;
 
   void _showGenre(BuildContext context, int genreId) {
-    AppRouter.router.navigateTo(context, '/top/${genreId.toString()}');
+    AppRouter.router.navigateTo(context, '/top/genre/${genreId.toString()}');
   }
 
   @override
@@ -169,11 +170,11 @@ class CategoriesView extends StatelessWidget {
           spacing: 8.0,
           runSpacing: -8.0,
           children: genres
-              .map((genre) => ActionChip(
-                label: Text(genre[NAME]),
-                onPressed: () => _showGenre(context, genre[MAL_ID]),
-              ))
-              .toList(),
+            .map((genre) => ActionChip(
+              label: Text(genre[NAME]),
+              onPressed: () => _showGenre(context, genre[MAL_ID]),
+            ))
+            .toList(),
         ),
       ],
     );

@@ -3,8 +3,8 @@ import 'http.dart';
 import 'endpoints.dart';
 import 'package:anipocket/constants.dart';
 
-Future<List> search(String type, String terms, {int page = 1}) async {
-  final uri = '${Endpoints.search}/$type?q=$terms&page=$page';
+Future<List> search(String type, String terms, {int page = 1, String queryString = ''}) async {
+  final uri = '${Endpoints.search}/$type?q=$terms&page=$page&$queryString';
   final Map payload = await httpGet(uri);
   final List data = payload[RESULTS];
   return data;

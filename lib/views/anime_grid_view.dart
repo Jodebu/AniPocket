@@ -18,7 +18,7 @@ class AnimeGridView extends StatelessWidget {
   Widget build(BuildContext context) {
     return OrientationBuilder(builder: (context, orientation) {
       return GridView.builder(
-        padding: EdgeInsets.only(top: viewType == ViewType.search ? 68.0 : 0),
+        padding: EdgeInsets.only(top: viewType == ViewType.search ? 73.0 : 0),
         //TODO: only portrait plz
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: orientation == Orientation.portrait

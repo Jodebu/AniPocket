@@ -10,6 +10,7 @@ const String EPISODES = 'episodes';
 const String EPISODES_LAST_PAGE = 'episodes_last_page';
 const String ERROR = 'error';
 const String FILLER = 'filler';
+const String GENRE = 'genre';
 const String GENRES = 'genres';
 const String ID = 'id';
 const String IMAGE_URL = 'image_url';
@@ -24,6 +25,7 @@ const String RATING = 'rating';
 const String RESULTS = 'results';
 const String RECAP = 'recap';
 const String SMALL = 'small';
+const String STATE = 'state';
 const String STATUS = 'status';
 const String STRING = 'string';
 const String SYNOPSIS = 'synopsis';
@@ -47,6 +49,7 @@ const String UI_LOADING = 'Loading...';
 const String UI_ENGLISH = 'English:';
 const String UI_EPISODES = 'Episodes';
 const String UI_FAVORITES = 'Favorites';
+const String UI_FILTER = 'Filter';
 const String UI_NEWS = 'News';
 const String UI_INFO = 'Info';
 const String UI_JAPANESE = 'Japanese:';
@@ -57,9 +60,11 @@ const String UI_NO_TITLE = 'No title found';
 const String UI_MEDIA = 'Media';
 const String UI_PLAY_IN_YOUTUBE = 'Play in YouTube';
 const String UI_SEARCH = 'Search';
-const String UI_SEARCH_HINT = 'Search here...';
+const String UI_SEARCH_HINT = 'Search Anime';
 const String UI_STANDARD_TITLE = 'Standard title:';
+const String UI_STATE = 'State';
 const String UI_SYNOPSIS = 'Synopsis';
+const String UI_TYPE = 'Type';
 const String UI_VIDEOS = 'Videos';
 
 //SharedPreferences related
@@ -110,4 +115,27 @@ const List<Map> ANIME_GENRES = [
   {MAL_ID: 41, NAME: 'Thriller'},
   {MAL_ID: 42, NAME: 'Seinen'},
   {MAL_ID: 43, NAME: 'Josei'}
+];
+
+List<Map> getSortedGenres() {
+  List<Map> genres = List.from(ANIME_GENRES);
+  genres.sort((a, b) => a[NAME].compareTo(b[NAME]));
+  return genres;
+}
+
+//Type related
+const List<Map> ANIME_TYPES = [
+  {MAL_ID: 'tv', NAME: 'TV'},
+  {MAL_ID: 'ova', NAME: 'OVA'},
+  {MAL_ID: 'movie', NAME: 'Movie'},
+  {MAL_ID: 'special', NAME: 'Special'},
+  {MAL_ID: 'ona', NAME: 'ONA'},
+  {MAL_ID: 'music', NAME: 'Music'}
+];
+
+//State related
+const List<Map> ANIME_STATE = [
+  {MAL_ID: 'airing', NAME: 'Airing'},
+  {MAL_ID: 'completed', NAME: 'Completed'},
+  {MAL_ID: 'to_be_aired', NAME: 'Upcoming'}
 ];
