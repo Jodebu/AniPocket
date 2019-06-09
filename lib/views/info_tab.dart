@@ -1,4 +1,4 @@
-import 'package:anipocket/config/app_router.dart';
+import 'package:anipocket/routing/app_router.dart';
 import 'package:flutter/material.dart';
 import 'package:anipocket/constants.dart';
 import 'package:cached_network_image/cached_network_image.dart';

@@ -5,7 +5,7 @@ import 'package:flutter/material.dart';
 import 'package:fluro/fluro.dart';
 import 'package:flutter_local_notifications/flutter_local_notifications.dart';
 import 'package:shared_preferences/shared_preferences.dart';
-import 'config/app_router.dart';
+import 'package:anipocket/routing/app_router.dart';
 import 'package:anipocket/routing/routes.dart';
 import 'package:anipocket/pages/index.dart';
 import 'package:anipocket/constants.dart';
@@ -13,17 +13,8 @@ import 'package:background_fetch/background_fetch.dart';
 
 FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
-
-void backgroundFetchHeadlessTask() async {
-  print('[BackgroundFetch] Headless event received.');
-  _AniPocketState.initializeNotifications(flutterLocalNotificationsPlugin);
-  _AniPocketState.emitNotification(flutterLocalNotificationsPlugin);
-  BackgroundFetch.finish();
-}
-
 void main() {
   runApp(AniPocket());
-  //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class AniPocket extends StatefulWidget {
@@ -31,14 +22,13 @@ class AniPocket extends StatefulWidget {
 }
 
 class _AniPocketState extends State<AniPocket> {
-  static var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
+  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-    initializeNotifications(flutterLocalNotificationsPlugin);
-    //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+    initializeNotifications();
   }
 
   Future<void> initPlatformState() async {
@@ -53,7 +43,7 @@ class _AniPocketState extends State<AniPocket> {
     if (!mounted) return;
   }
 
-  static void initializeNotifications(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  void initializeNotifications() async {
     //TODO: Poner un icono decente en las notificaciones
     var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = IOSInitializationSettings(
@@ -64,11 +54,12 @@ class _AniPocketState extends State<AniPocket> {
       onSelectNotification: (String payload) {});
 }
 
-  static void emitNotification(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  void emitNotification() async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
+    int lastNotification = prefs.getInt(SP_LAST_NOTIFICATION) ?? 0;
     bool notifiedToday = prefs.getBool(SP_NOTIFIED_TODAY) ?? false;
 
-    if (true/* DateTime.now().hour < 8 */) {
+    if (lastNotification != DateTime.now().weekday) {
       prefs.setBool(SP_NOTIFIED_TODAY, false);
       notifiedToday = false;
     }
@@ -90,14 +81,15 @@ class _AniPocketState extends State<AniPocket> {
 
       if (titleList.isEmpty) return;
       
-      sendNotification(titleList, flutterLocalNotificationsPlugin);
+      sendNotification(titleList);
       prefs.setBool(SP_NOTIFIED_TODAY, true);
+      prefs.setInt(SP_LAST_NOTIFICATION, DateTime.now().weekday);
     }
 
     BackgroundFetch.finish();
   }
 
-  static void sendNotification(List animeTitles, FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+  void sendNotification(List animeTitles) async {
     var bigTextStyleInformation = BigTextStyleInformation(
         animeTitles.join('<br>'),
         htmlFormatBigText: true,
@@ -127,7 +119,7 @@ class _AniPocketState extends State<AniPocket> {
     Routes.configureRoutes(router);
     AppRouter.router = router;
 
-    emitNotification(flutterLocalNotificationsPlugin);
+    emitNotification();
 
     return MaterialApp(
       title: APP_TITLE,

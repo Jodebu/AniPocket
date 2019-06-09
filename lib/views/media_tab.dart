@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:anipocket/config/app_router.dart';
+import 'package:anipocket/routing/app_router.dart';
 
 class MediaTab extends StatelessWidget {
   MediaTab(
