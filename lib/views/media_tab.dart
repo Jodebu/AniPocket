@@ -2,7 +2,7 @@ import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
 import 'package:jikan_dart/jikan_dart.dart';
 import 'package:url_launcher/url_launcher.dart';
-import 'package:anipocket/config/app_router.dart';
+import 'package:anipocket/routing/app_router.dart';
 
 class MediaTab extends StatelessWidget {
   MediaTab(
@@ -84,7 +84,7 @@ class MediaItem extends StatelessWidget {
       onTap: () {
         final encodedTitle = Uri.encodeComponent(title);
         AppRouter.router.navigateTo(context, '/carousel/$malId/$encodedTitle/$index');
-        //TODO: Hero animations -> transitions
+        //TODO: Intentar poner animaciones en el cambio de vista
       },
       ),
     );

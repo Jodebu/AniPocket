@@ -2,7 +2,7 @@ import 'package:anipocket/constants.dart';
 import 'package:anipocket/pages/index.dart';
 import 'package:flutter/material.dart';
 import 'package:cached_network_image/cached_network_image.dart';
-import 'package:anipocket/config/app_router.dart';
+import 'package:anipocket/routing/app_router.dart';
 
 class AnimeGridView extends StatelessWidget {
   static const int PORTRAIT_COLUMNS = 3;
@@ -19,7 +19,6 @@ class AnimeGridView extends StatelessWidget {
     return OrientationBuilder(builder: (context, orientation) {
       return GridView.builder(
         padding: EdgeInsets.only(top: viewType == ViewType.search ? 73.0 : 0),
-        //TODO: only portrait plz
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: orientation == Orientation.portrait
               ? PORTRAIT_COLUMNS
@@ -37,7 +36,7 @@ class AnimeGridView extends StatelessWidget {
         },
       );
     });
-  } //TODO add something to indicate that the app is loading a new page!
+  }
 }
 
 class AnimeListItem extends StatelessWidget {
