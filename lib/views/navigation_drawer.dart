@@ -18,7 +18,7 @@ class NavigationDrawer extends StatelessWidget {
     return genres;
   }
 
-// TODO: General news section
+// TODO: Una sección general de noticias estaría bien
   @override
   Widget build(BuildContext context) {
     List<Map> genres = _getSortedGenres();

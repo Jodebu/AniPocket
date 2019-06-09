@@ -16,12 +16,14 @@ FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin;
 
 void backgroundFetchHeadlessTask() async {
   print('[BackgroundFetch] Headless event received.');
+  _AniPocketState.initializeNotifications(flutterLocalNotificationsPlugin);
+  _AniPocketState.emitNotification(flutterLocalNotificationsPlugin);
   BackgroundFetch.finish();
 }
 
 void main() {
   runApp(AniPocket());
-  BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
+  //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
 }
 
 class AniPocket extends StatefulWidget {
@@ -29,16 +31,14 @@ class AniPocket extends StatefulWidget {
 }
 
 class _AniPocketState extends State<AniPocket> {
-  List<DateTime> _events = [];
-  var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
-
-
+  static var flutterLocalNotificationsPlugin = FlutterLocalNotificationsPlugin();
 
   @override
   void initState() {
     super.initState();
     initPlatformState();
-    initializeNotifications();
+    initializeNotifications(flutterLocalNotificationsPlugin);
+    //BackgroundFetch.registerHeadlessTask(backgroundFetchHeadlessTask);
   }
 
   Future<void> initPlatformState() async {
@@ -53,7 +53,8 @@ class _AniPocketState extends State<AniPocket> {
     if (!mounted) return;
   }
 
-  void initializeNotifications() async {
+  static void initializeNotifications(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
+    //TODO: Poner un icono decente en las notificaciones
     var initializationSettingsAndroid = AndroidInitializationSettings('app_icon');
     var initializationSettingsIOS = IOSInitializationSettings(
       onDidReceiveLocalNotification: (int id, String title, String body, String payload) {});
@@ -63,17 +64,11 @@ class _AniPocketState extends State<AniPocket> {
       onSelectNotification: (String payload) {});
 }
 
-  void emitNotification() async {
-    //TODO: Change icon!!
-    print('[BackgroundFetch] Event received');
-    setState(() {
-      _events.insert(0, new DateTime.now());
-    });
-
+  static void emitNotification(FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     SharedPreferences prefs = await SharedPreferences.getInstance();
     bool notifiedToday = prefs.getBool(SP_NOTIFIED_TODAY) ?? false;
 
-    if (DateTime.now().hour < 8) {
+    if (true/* DateTime.now().hour < 8 */) {
       prefs.setBool(SP_NOTIFIED_TODAY, false);
       notifiedToday = false;
     }
@@ -95,14 +90,14 @@ class _AniPocketState extends State<AniPocket> {
 
       if (titleList.isEmpty) return;
       
-      sendNotification(titleList);
+      sendNotification(titleList, flutterLocalNotificationsPlugin);
       prefs.setBool(SP_NOTIFIED_TODAY, true);
     }
 
     BackgroundFetch.finish();
   }
 
-  void sendNotification(List animeTitles) async {
+  static void sendNotification(List animeTitles, FlutterLocalNotificationsPlugin flutterLocalNotificationsPlugin) async {
     var bigTextStyleInformation = BigTextStyleInformation(
         animeTitles.join('<br>'),
         htmlFormatBigText: true,
@@ -132,7 +127,7 @@ class _AniPocketState extends State<AniPocket> {
     Routes.configureRoutes(router);
     AppRouter.router = router;
 
-    emitNotification();
+    emitNotification(flutterLocalNotificationsPlugin);
 
     return MaterialApp(
       title: APP_TITLE,

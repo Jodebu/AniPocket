@@ -84,7 +84,7 @@ class MediaItem extends StatelessWidget {
       onTap: () {
         final encodedTitle = Uri.encodeComponent(title);
         AppRouter.router.navigateTo(context, '/carousel/$malId/$encodedTitle/$index');
-        //TODO: Hero animations -> transitions
+        //TODO: Intentar poner animaciones en el cambio de vista
       },
       ),
     );

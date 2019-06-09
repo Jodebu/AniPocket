@@ -102,7 +102,7 @@ class _FilterDialogState extends State<FilterDialog> {
           child: Text("OK"),
           onPressed: () {
             Navigator.of(context).pop();
-            //TODO: return the filters!!
+            //TODO: Devolver los filtros
             _applyFilters();
           },
         ),

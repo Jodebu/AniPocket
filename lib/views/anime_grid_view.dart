@@ -19,7 +19,6 @@ class AnimeGridView extends StatelessWidget {
     return OrientationBuilder(builder: (context, orientation) {
       return GridView.builder(
         padding: EdgeInsets.only(top: viewType == ViewType.search ? 73.0 : 0),
-        //TODO: only portrait plz
         gridDelegate: SliverGridDelegateWithFixedCrossAxisCount(
           crossAxisCount: orientation == Orientation.portrait
               ? PORTRAIT_COLUMNS
@@ -37,7 +36,7 @@ class AnimeGridView extends StatelessWidget {
         },
       );
     });
-  } //TODO add something to indicate that the app is loading a new page!
+  }
 }
 
 class AnimeListItem extends StatelessWidget {
